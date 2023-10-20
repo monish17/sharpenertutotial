@@ -22,6 +22,5 @@ aoi.style.borderBottom="solid 3px #000"
 const item=document.getElementsByClassName('title');
 console.log(item[0]);
 item[0].style.fontWeight='bold';
-item[0].style.color='green';
 
 

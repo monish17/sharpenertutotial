@@ -15,7 +15,7 @@ const ai=document.getElementById("header-title");
 console.log(ai);
 console.log(ai.textContent);
 console.log(ai.innerText);
-ai.innerHTML= '<h3>hello</h3>';
+//ai.innerHTML= '<h3>hello1</h3>';
 //ai.style.borderBottom="solid 3px #000"
 const aoi=document.getElementById("main-header");
 aoi.style.borderBottom="solid 3px #000"
@@ -37,7 +37,7 @@ item2[0].textContent="additional item";
 item2[0].style.color="blue";
 const item3=document.getElementsByTagName("li");
 item3[4].style.backgroundColor="orange";*/
-const items1=document.querySelector(".list-group-item:nth-child(2)");
+/*const items1=document.querySelector(".list-group-item:nth-child(2)");
 items1.style.backgroundColor="green";
 const items2=document.querySelector(".list-group-item:nth-child(3)");
 items2.style.display="none";
@@ -46,7 +46,53 @@ for (var i=0;i<odd.length;i++){
     odd[i].style.backgroundColor="green";
 }
 const items3=document.querySelectorAll("li");
-items3[1].style.color="green";
+items3[1].style.color="green";*/
+var itemsList = document.querySelector('#items');
+console.log(itemsList.parentNode);
+itemsList.parentElement.style.backgroundColor="#f4f4f4";
+console.log(itemsList.parentNode.parentNode);
+console.log(itemsList.parentNode.parentNode.parentNode);
+console.log(itemsList.childNodes);
+itemsList.children[1].style.backgroundColor="grey";
+itemsList.firstElementChild.textContent="hello";
+console.log(itemsList.firstChild);
+console.log(itemsList.lastChild);
+console.log(itemsList.nextSibling);
+console.log(itemsList.previousSibling);
+itemsList.lastElementChild.style.fontWeight="bold";
+itemsList.previousElementSibling.style.backgroundColor="violet";
+const newdiv=document.createElement("div");
+//console.log(newdiv);
+//solution
+newdiv.className="hello";
+newdiv.id="hi";
+newdiv.setAttribute("title","hi there");
+console.log(newdiv);
+const newdivtext=document.createTextNode("hello");
+newdiv.appendChild(newdivtext);
+const container=document.querySelector('header .container');
+const h1=document.querySelector('header h1');
+container.insertBefore(newdiv,h1);
+const newdiv2 = document.createElement("div");
+newdiv2.className="hello1";
+newdiv2.id="hi1";
+newdiv2.setAttribute("title","hello");
+const newdivtext2=document.createTextNode("hello");
+newdiv2.appendChild(newdivtext2);
+console.log(newdiv2);
+const itemdiv=document.querySelector('div .list-group');
+const it1=document.querySelector('div li');
+itemdiv.insertBefore(newdiv2,it1);
+
+
+
+
+
+
+
+
+
+
 
 
 

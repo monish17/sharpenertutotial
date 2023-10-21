@@ -23,5 +23,13 @@ const item=document.getElementsByClassName('title');
 console.log(item[0]);
 item[0].style.fontWeight='bold';
 item[0].style.color='green';
+const item1=document.getElementsByClassName("list-group-item")
+console.log(item1)
+console.log(item1[1])
+item1[0].textContent= "hello";
+item1[2].style.backgroundColor="green";
+for (var i=0;i<item1.length;i++){
+    item1[i].style.fontWeight="bold"
+}
 
 

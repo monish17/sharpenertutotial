@@ -31,5 +31,11 @@ item1[2].style.backgroundColor="green";
 for (var i=0;i<item1.length;i++){
     item1[i].style.fontWeight="bold"
 }
+const item2=document.getElementsByClassName("list-group0");
+console.log(item2)
+item2[0].textContent="additional item";
+item2[0].style.color="blue";
+const item3=document.getElementsByTagName("li");
+item3[4].style.backgroundColor="orange";
 
 

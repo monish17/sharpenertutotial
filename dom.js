@@ -26,7 +26,7 @@ item[0].style.color='green';
 const item1=document.getElementsByClassName("list-group-item")
 console.log(item1)
 console.log(item1[1])
-item1[0].textContent= "hello";
+/*item1[0].textContent= "hello";
 item1[2].style.backgroundColor="green";
 for (var i=0;i<item1.length;i++){
     item1[i].style.fontWeight="bold"
@@ -36,6 +36,19 @@ console.log(item2)
 item2[0].textContent="additional item";
 item2[0].style.color="blue";
 const item3=document.getElementsByTagName("li");
-item3[4].style.backgroundColor="orange";
+item3[4].style.backgroundColor="orange";*/
+const items1=document.querySelector(".list-group-item:nth-child(2)");
+items1.style.backgroundColor="green";
+const items2=document.querySelector(".list-group-item:nth-child(3)");
+items2.style.display="none";
+const odd=document.querySelectorAll("li:nth-child(odd)");
+for (var i=0;i<odd.length;i++){
+    odd[i].style.backgroundColor="green";
+}
+const items3=document.querySelectorAll("li");
+items3[1].style.color="green";
+
+
+
 
 

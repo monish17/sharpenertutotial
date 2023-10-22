@@ -1,4 +1,4 @@
-console.log(document.domain);
+/*console.log(document.domain);
 console.log(document.URL);
 console.log(document.title);
 document.title= 'asdf';
@@ -25,7 +25,7 @@ item[0].style.fontWeight='bold';
 item[0].style.color='green';
 const item1=document.getElementsByClassName("list-group-item")
 console.log(item1)
-console.log(item1[1])
+console.log(item1[1])*/
 /*item1[0].textContent= "hello";
 item1[2].style.backgroundColor="green";
 for (var i=0;i<item1.length;i++){
@@ -47,7 +47,7 @@ for (var i=0;i<odd.length;i++){
 }
 const items3=document.querySelectorAll("li");
 items3[1].style.color="green";*/
-var itemsList = document.querySelector('#items');
+/*var itemsList = document.querySelector('#items');
 console.log(itemsList.parentNode);
 itemsList.parentElement.style.backgroundColor="#f4f4f4";
 console.log(itemsList.parentNode.parentNode);
@@ -62,9 +62,9 @@ console.log(itemsList.previousSibling);
 itemsList.lastElementChild.style.fontWeight="bold";
 itemsList.previousElementSibling.style.backgroundColor="violet";
 const newdiv=document.createElement("div");
-//console.log(newdiv);
+//console.log(newdiv);*/
 //solution
-newdiv.className="hello";
+/*newdiv.className="hello";
 newdiv.id="hi";
 newdiv.setAttribute("title","hi there");
 console.log(newdiv);
@@ -82,7 +82,36 @@ newdiv2.appendChild(newdivtext2);
 console.log(newdiv2);
 const itemdiv=document.querySelector('div .list-group');
 const it1=document.querySelector('div li');
-itemdiv.insertBefore(newdiv2,it1);
+itemdiv.insertBefore(newdiv2,it1);*/
+const form=document.getElementById("addForm");
+const newitem=document.getElementById("items");
+form.addEventListener("submit",additem);
+newitem.addEventListener("click",removeitem);
+
+function additem(e){
+    e.preventDefault();
+    const item=document.getElementById("item").value;
+    const li=document.createElement("li");
+    li.className="list-group-item";
+    li.appendChild(document.createTextNode(item));
+    newitem.appendChild(li)
+    const deletebtn=document.createElement("button");
+    deletebtn.className="btn btn-danger btn-sm float-right delete";
+    deletebtn.appendChild(document.createTextNode("X"));
+    li.appendChild(deletebtn);
+    const editbtn=document.createElement('button');
+    editbtn.appendChild(document.createTextNode('edit'));
+    li.appendChild(editbtn);
+
+}
+function removeitem(e){
+    if (e.target.classList.contains('delete')){
+        if(confirm('are you sure')){
+            const li=e.target.parentElement;
+            newitem.removeChild(li);
+        }
+    }
+}
 
 
 

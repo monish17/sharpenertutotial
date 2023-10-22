@@ -100,6 +100,7 @@ function additem(e){
     deletebtn.appendChild(document.createTextNode("X"));
     li.appendChild(deletebtn);
     const editbtn=document.createElement('button');
+    editbtn.className="btn btn-danger btn-sm float-right delete";
     editbtn.appendChild(document.createTextNode('edit'));
     li.appendChild(editbtn);
 

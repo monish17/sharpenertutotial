@@ -18,22 +18,20 @@ function onSubmit(e){
         const li=document.createElement('li');
         li.appendChild(document.createTextNode(`${nameInput.value} : ${email.value}:${phonenumber.value}:${schedule.value}`));
         ul.appendChild(li);
-        let submissions=JSON.parse(localStorage.getItem('submissions'))||[];
         const myobj={
             name:nameInput.value,
             email:email.value,
             phonenumber:phonenumber.value,
             schedule:schedule.value
         }
-        submissions.push(myobj);
-        localStorage.setItem('submissions',JSON.stringify(submissions));
+        localStorage.setItem(email.value,JSON.stringify(myobj));
         /*const myobj_serialized=JSON.stringify(myobj);
         localStorage.setItem('myobj',myobj_serialized);
         //console.log(myobj_serialized);
         //taking the string from the and reversing it as object
         const myobj_deserialized=JSON.parse(localStorage.getItem('myobj',myobj_serialized));
         console.log(myobj_deserialized);*/
-        let retrive_submission=JSON.parse(localStorage.getItem('submissions'));
+        let retrive_submission=JSON.parse(localStorage.getItem(email.value));
         console.log(retrive_submission);
         nameInput.value=''
         email.value=''

@@ -16,7 +16,25 @@ function onSubmit(e){
     }
     else{
         const li=document.createElement('li');
+        const del=document.createElement('input');
+        del.type='button';
+        del.value='Delete';
+        del.addEventListener('click',deleteclick);
+        function deleteclick(e){
+            const li = e.target.closest('li');
+            if (li) {
+                li.remove();
+                const liText=li.textContent;
+                const parts = liText.split(':');
+                const emailValue = parts[1].trim();
+                //console.log(emailValue);
+                localStorage.removeItem(emailValue);
+            }
+        }
         li.appendChild(document.createTextNode(`${nameInput.value} : ${email.value}:${phonenumber.value}:${schedule.value}`));
+        const separator=document.createTextNode(' ');
+        li.append(separator);
+        li.appendChild(del);
         ul.appendChild(li);
         const myobj={
             name:nameInput.value,
@@ -31,8 +49,8 @@ function onSubmit(e){
         //taking the string from the and reversing it as object
         const myobj_deserialized=JSON.parse(localStorage.getItem('myobj',myobj_serialized));
         console.log(myobj_deserialized);*/
-        let retrive_submission=JSON.parse(localStorage.getItem(email.value));
-        console.log(retrive_submission);
+        /*let retrive_submission=JSON.parse(localStorage.getItem(email.value));
+        console.log(retrive_submission);*/
         nameInput.value=''
         email.value=''
         phonenumber.value=''

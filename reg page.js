@@ -14,10 +14,18 @@ function onSubmit(e){
         setTimeout(() =>msg.remove(),3000);
     }
     else{
-       localStorage.setItem('name',nameInput.value);
-       localStorage.setItem('email',email.value);
-       localStorage.setItem('phonenumber',phonenumber.value);
-       localStorage.setItem('schedule',schedule.value);
+        const myobj={
+            name:nameInput.value,
+            email:email.value,
+            phonenumber:phonenumber.value,
+            schedule:schedule.value
+        }
+        const myobj_serialized=JSON.stringify(myobj);
+        localStorage.setItem('myobj',myobj_serialized);
+        //console.log(myobj_serialized);
+        //taking the string from the and reversing it as object
+        const myobj_deserialized=JSON.parse(localStorage.getItem('myobj',myobj_serialized));
+        console.log(myobj_deserialized);
 
     }
 }

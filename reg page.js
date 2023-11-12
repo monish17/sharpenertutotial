@@ -43,7 +43,7 @@ function onSubmit(e){
             schedule:schedule.value
         }
         //localStorage.setItem(email.value,JSON.stringify(myobj));
-        axios.post("https://crudcrud.com/api/b5d9fa68f6f54c7d833ef0cf9f32e825/data",myobj)
+        axios.post("https://crudcrud.com/api/4202aa9a4a6e451bb752d7169c8be646/data",myobj)
             .then((Response)=>{
                 console.log(Response);
             })
@@ -70,16 +70,25 @@ function showNewUserOnScreen(user) {
     const del = document.createElement('input');
     del.type = 'button';
     del.value = 'Delete';
+    //const id=user.id
     del.addEventListener('click', deleteclick);
 
     function deleteclick(e) {
         const li = e.target.closest('li');
         if (li) {
             li.remove();
-            const liText = li.textContent;
-            const parts = liText.split(':');
-            const emailValue = parts[1].trim();
-            localStorage.removeItem(emailValue);
+            // const liText = li.textContent;
+            // const parts = liText.split(':');
+            // const emailValue = parts[1].trim();
+            const id=user._id;
+            axios.delete(`https://crudcrud.com/api/4202aa9a4a6e451bb752d7169c8be646/data/${id}`)
+                .then((response)=>{
+                    console.log(response);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    console.log('error happening on the link')
+                })
         }
     }
 
@@ -90,7 +99,7 @@ function showNewUserOnScreen(user) {
     ul.appendChild(li);
 }
 window.addEventListener("DOMContentLoaded",()=>{
-    axios.get("https://crudcrud.com/api/b5d9fa68f6f54c7d833ef0cf9f32e825/data")
+    axios.get("https://crudcrud.com/api/4202aa9a4a6e451bb752d7169c8be646/data")
         .then((response)=>{
             console.log(response)
             for(var i=0;i<response.data.length;i++){

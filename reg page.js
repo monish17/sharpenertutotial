@@ -50,6 +50,7 @@ function onSubmit(e){
             .catch((err)=>{
                 console.log(err);
             })
+        
         /*const myobj_serialized=JSON.stringify(myobj);
         localStorage.setItem('myobj',myobj_serialized);
         //console.log(myobj_serialized);
@@ -64,3 +65,39 @@ function onSubmit(e){
         schedule.value=''
     }
 }
+function showNewUserOnScreen(user) {
+    const li = document.createElement('li');
+    const del = document.createElement('input');
+    del.type = 'button';
+    del.value = 'Delete';
+    del.addEventListener('click', deleteclick);
+
+    function deleteclick(e) {
+        const li = e.target.closest('li');
+        if (li) {
+            li.remove();
+            const liText = li.textContent;
+            const parts = liText.split(':');
+            const emailValue = parts[1].trim();
+            localStorage.removeItem(emailValue);
+        }
+    }
+
+    li.appendChild(document.createTextNode(`${user.name} :   ${user.email}:  ${user.phonenumber}:  ${user.schedule}`));
+    const separator = document.createTextNode(' ');
+    li.append(separator);
+    li.appendChild(del);
+    ul.appendChild(li);
+}
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/b5d9fa68f6f54c7d833ef0cf9f32e825/data")
+        .then((response)=>{
+            console.log(response)
+            for(var i=0;i<response.data.length;i++){
+                showNewUserOnScreen(response.data[i])
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+})

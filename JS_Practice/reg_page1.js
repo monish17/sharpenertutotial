@@ -29,33 +29,29 @@ function onSubmit(e){
                 const liText=li.textContent;
                 const parts = liText.split(':');
                 const emailValue = parts[1].trim();
-                axios.get('https://crudcrud.com/api/bbe3477b4f82459f8c2b294888090db4/userData')
-                    .then((response)=>{
-                        const dataToDelete=response.data.find(entry => entry.email === emailValue);
-                        if(dataToDelete){
-                            console.log(dataToDelete);
-                            const user_id=dataToDelete._id;
-                            axios.delete(`https://crudcrud.com/api/bbe3477b4f82459f8c2b294888090db4/userData/${user_id}`)
-                                .then((deleteresponse)=>{
-                                    console.log(deleteresponse);
-                                    li.remove();
-                                    console.log('user Details deleted from the server');
+                getUserIdByEmail(emailValue)
+                    .then((userId) => {
+                        if (userId) {
+                            deleteUserDetails(userId)
+                                .then((success) => {
+                                    if (success) {
+                                        li.remove();
+                                    } else {
+                                        console.log('Problem in deleteUserDetails function');
+                                    }
                                 })
-                                .catch((error)=>{
+                                .catch((error) => {
                                     console.log(error);
-                                    console.log('something wrong in the axios.delete of dataToDelete');
-                                })
+                                });
+                        } else {
+                            console.log('User ID not found for deletion');
                         }
-                        else{
-                            console.log('Entry not found for deletion');
-                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
 
-                    })
-                    .catch((err)=>{
-                        console.log(err);
-                        console.log('error happening on the axios.get function of deleteClick function')
-                    })
-             }
+            }
         }
         edit.addEventListener('click',edititem);
         function edititem(e){
@@ -83,7 +79,7 @@ function onSubmit(e){
             phonenumber:phonenumber.value,
             schedule:schedule.value
         }
-        axios.post("https://crudcrud.com/api/bbe3477b4f82459f8c2b294888090db4/userData",myobj)
+        axios.post("https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData",myobj)
             .then((Response)=>{
                 console.log(Response);
                 console.log('uploaded to the server')
@@ -97,4 +93,32 @@ function onSubmit(e){
         phonenumber.value=''
         schedule.value=''
     }
+}
+function getUserIdByEmail(emailValue) {
+    return axios.get('https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData')
+        .then((response) => {
+            const userData = response.data.find(entry => entry.email === emailValue);
+            return userData ? userData._id : null;
+        })
+        .catch((error) => {
+            console.log(error);
+            console.log('Error getting user data for deleting or updating');
+            return null;
+        });
+}
+function deleteUserDetails(user_id) {
+    return new Promise((resolve, reject) => {
+        axios.delete(`https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData/${user_id}`)
+            .then((response) => {
+                console.log(response);
+                console.log('True');
+                resolve(true);
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log('error deleting the user details');
+                console.log('False');
+                reject(false);
+            });
+    });
 }

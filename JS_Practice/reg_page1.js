@@ -42,6 +42,7 @@ function onSubmit(e){
                                 })
                                 .catch((error) => {
                                     console.log(error);
+                                    console.log('problem in the deleteUserDetails function')
                                 });
                         } else {
                             console.log('User ID not found for deletion');
@@ -49,6 +50,7 @@ function onSubmit(e){
                     })
                     .catch((error) => {
                         console.log(error);
+                        console.log('error in getUserDetailsByEmail function');
                     });
 
             }
@@ -59,12 +61,35 @@ function onSubmit(e){
             console.log(li.textContent);
             const datastring=li.textContent;
             const datacomponents=datastring.split(':');
-            nameInput.value=datacomponents[0];
-            email.value=datacomponents[1];
-            phonenumber.value=datacomponents[2];
+            nameInput.value=datacomponents[0].trim();
+            email.value=datacomponents[1].trim();
+            phonenumber.value=datacomponents[2].trim();
             //schedule.value=datacomponents[3];
-            li.remove();
-            localStorage.removeItem(email.value);
+            getUserIdByEmail(email.value)
+            .then((userId) => {
+                if (userId) {
+                    deleteUserDetails(userId)
+                        .then((success) => {
+                            if (success) {
+                                li.remove();
+                            } else {
+                                console.log('Problem in deleteUserDetails function');
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            console.log('problem in the deleteUserDetails function')
+                        });
+                } else {
+                    console.log('User ID not found for deletion');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log('error in getUserDetailsByEmail function');
+            });
+
+            
         }
         li.appendChild(document.createTextNode(`${nameInput.value} : ${email.value}:${phonenumber.value}:${schedule.value}`));
         const separator=document.createTextNode(' ');
@@ -79,7 +104,7 @@ function onSubmit(e){
             phonenumber:phonenumber.value,
             schedule:schedule.value
         }
-        axios.post("https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData",myobj)
+        axios.post("https://crudcrud.com/api/f9ab1a3530894aef854e324d8a72c6be/userData",myobj)
             .then((Response)=>{
                 console.log(Response);
                 console.log('uploaded to the server')
@@ -95,23 +120,26 @@ function onSubmit(e){
     }
 }
 function getUserIdByEmail(emailValue) {
-    return axios.get('https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData')
-        .then((response) => {
-            const userData = response.data.find(entry => entry.email === emailValue);
-            return userData ? userData._id : null;
-        })
-        .catch((error) => {
-            console.log(error);
-            console.log('Error getting user data for deleting or updating');
-            return null;
-        });
+    return new Promise((resolve, reject) => {
+        axios.get('https://crudcrud.com/api/f9ab1a3530894aef854e324d8a72c6be/userData')
+            .then((response) => {
+                const userData = response.data.find(entry => entry.email === emailValue);
+                resolve(userData ? userData._id : null);
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log('Error getting user data for deleting or updating');
+                reject(null);
+            });
+    });
 }
+
 function deleteUserDetails(user_id) {
     return new Promise((resolve, reject) => {
-        axios.delete(`https://crudcrud.com/api/4b99440cf98041d3915193d4914802c6/userData/${user_id}`)
+        axios.delete(`https://crudcrud.com/api/f9ab1a3530894aef854e324d8a72c6be/userData/${user_id}`)
             .then((response) => {
                 console.log(response);
-                console.log('True');
+                console.log('UserDetails deleted from server');
                 resolve(true);
             })
             .catch((error) => {
@@ -122,3 +150,100 @@ function deleteUserDetails(user_id) {
             });
     });
 }
+function showNewUserOnScreen(user) {
+    const li = document.createElement('li');
+    const del = document.createElement('input');
+    const edit=document.createElement('input');
+    del.type = 'button';
+    del.value = 'Delete';
+    edit.type='button';
+    edit.value='Edit';
+    li.appendChild(document.createTextNode(`${user.name} :   ${user.email}:  ${user.phonenumber}:  ${user.schedule}`));
+    const separator = document.createTextNode(' ');
+    li.append(separator);
+    li.appendChild(edit);
+    li.append(separator);
+    li.appendChild(del);
+    ul.appendChild(li);
+    del.addEventListener('click', deleteClick);
+    function deleteClick(e){
+        const li = e.target.closest('li');
+        if (li) {
+            const liText=li.textContent;
+            const parts = liText.split(':');
+            const emailValue = parts[1].trim();
+            getUserIdByEmail(emailValue)
+                .then((userId) => {
+                    if (userId) {
+                        deleteUserDetails(userId)
+                            .then((success) => {
+                                if (success) {
+                                    li.remove();
+                                } else {
+                                    console.log('Problem in deleteUserDetails function');
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                console.log('problem in the deleteUserDetails function')
+                            });
+                    } else {
+                        console.log('User ID not found for deletion');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    console.log('error in getUserDetailsByEmail function');
+                });
+
+        }
+    }
+    edit.addEventListener('click', editClick);
+    function editClick(e){
+        console.log(li);
+        console.log(li.textContent);
+        const datastring=li.textContent;
+        const datacomponents=datastring.split(':');
+        nameInput.value=datacomponents[0].trim();
+        email.value=datacomponents[1].trim();
+        phonenumber.value=datacomponents[2].trim();
+        //schedule.value=datacomponents[3];
+        getUserIdByEmail(email.value)
+        .then((userId) => {
+            if (userId) {
+                deleteUserDetails(userId)
+                    .then((success) => {
+                        if (success) {
+                            li.remove();
+                        } else {
+                            console.log('Problem in deleteUserDetails function');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        console.log('problem in the deleteUserDetails function')
+                    });
+            } else {
+                console.log('User ID not found for deletion');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            console.log('error in getUserDetailsByEmail function');
+        });
+
+        
+    } 
+}
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/f9ab1a3530894aef854e324d8a72c6be/userData")
+        .then((response)=>{
+            console.log(response)
+            for(var i=0;i<response.data.length;i++){
+                showNewUserOnScreen(response.data[i])
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+})

@@ -38,44 +38,6 @@ function onSubmit(e){
             console.log('Error in the axios.post line code');
         })
         del.addEventListener('click',deleteclick);
-        function deleteclick(e){
-            const li = e.target.closest('li');
-            if (li) {
-                const liText=li.textContent;
-                console.log(li.textContent);
-                const parts = liText.split('-');
-                const Table = parts[1];
-                // console.log('table');
-                console.log(Table);
-                getOrderIdByTableNo(Table)
-                    .then((OrderId) => {
-                        // console.log(Table);
-                        // console.log('orderId');
-                        // console.log(OrderId);
-                        if (OrderId) {
-                            deleteOrderDetails(OrderId)
-                                .then((success) => {
-                                    if (success) {
-                                        li.remove();
-                                    } else {
-                                        console.log('Problem in deleteUserDetails function');
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                    console.log('problem in the deleteUserDetails function')
-                                });
-                        } else {
-                            console.log('User ID not found for deletion');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        console.log('error in getUserDetailsByEmail function');
-                    });
-
-            }
-        }
         DishPrice.value=''
         Dishitem.value=''
         table.value=''
@@ -126,44 +88,6 @@ function showOrderDetailsOnScreen(user) {
     li.appendChild(del);
     selectedTable.appendChild(li);    
     del.addEventListener('click',deleteclick);
-    function deleteclick(e){
-        const li = e.target.closest('li');
-        if (li) {
-            const liText=li.textContent;
-            //console.log(li.textContent);
-            const parts = liText.split('-');
-            const Table = parts[1];
-            // console.log('table');
-            //console.log(Table);
-            getOrderIdByTableNo(Table)
-                .then((OrderId) => {
-                    // console.log(Table);
-                    // console.log('orderId');
-                    // console.log(OrderId);
-                    if (OrderId) {
-                        deleteOrderDetails(OrderId)
-                            .then((success) => {
-                                if (success) {
-                                    li.remove();
-                                } else {
-                                    console.log('Problem in deleteUserDetails function');
-                                }
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                                console.log('problem in the deleteUserDetails function')
-                            });
-                    } else {
-                        console.log('User ID not found for deletion');
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    console.log('error in getUserDetailsByEmail function');
-                });
-
-        }
-    }
 }
 window.addEventListener("DOMContentLoaded",()=>{
     axios.get("https://crudcrud.com/api/8132d5b330974d3eaa32a173a31b581f/userData")
@@ -178,3 +102,41 @@ window.addEventListener("DOMContentLoaded",()=>{
             console.log('Error Retriving Data from Server')
         })
 })
+function deleteclick(e){
+    const li = e.target.closest('li');
+    if (li) {
+        const liText=li.textContent;
+        console.log(li.textContent);
+        const parts = liText.split('-');
+        const Table = parts[1];
+        // console.log('table');
+        console.log(Table);
+        getOrderIdByTableNo(Table)
+            .then((OrderId) => {
+                // console.log(Table);
+                // console.log('orderId');
+                // console.log(OrderId);
+                if (OrderId) {
+                    deleteOrderDetails(OrderId)
+                        .then((success) => {
+                            if (success) {
+                                li.remove();
+                            } else {
+                                console.log('Problem in deleteUserDetails function');
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            console.log('problem in the deleteUserDetails function')
+                        });
+                } else {
+                    console.log('User ID not found for deletion');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                console.log('error in getUserDetailsByEmail function');
+            });
+
+    }
+}

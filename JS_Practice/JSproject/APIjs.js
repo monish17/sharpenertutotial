@@ -106,7 +106,7 @@ async function deleteClick(e) {
     const li = e.target.closest('li');
     if (li) {
         const liText = li.textContent;
-        console.log(li.textContent);
+        //console.log(li.textContent);
         const parts = liText.split('-');
         const Table = parts[1];
         

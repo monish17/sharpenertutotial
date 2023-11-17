@@ -10,30 +10,20 @@
 <body>
     <form id="myform">
         <div class="msg"></div>
-            <label for="price">Choose Price</label>
+            <label for="price">Selling Price</label>
             <input type="number" id="price" pattern="/d+" name="Price"> 
-            <label for="dish">Choose Dish</label> 
+            <label for="dish">Product Name</label> 
             <input type="text" id="dish" list="menu" autocomplete="off">
             <datalist id="menu">
-                <option>Chicken fried Rice</option>
-                <option>Mutton Briyani</option>
-                <option>Butter Naan</option>
-                <option>Paneer Tikka Masala</option>
+                <option>Canon Camera</option>
+                <option>Dell Laptop</option>
+                <option>Redmi SmartPhone</option>
+                <option>Boat Headset</option>
             </datalist>
-            <label for="table">Choose a Table</label>
-            <select id="table" name="table">
-                <option value="Table1">TABLE 1</option>
-                <option value="Table2">TABLE 2</option>
-                <option value="Table3">TABLE 3</option>
-            </select>
-
-            <button style="background-color: darkgray;">Create Bill</button><br><br><br>
-            <li><strong>TABLE 1</strong></li>
-            <ul id="Table1"></ul>
-            <li><strong>TABLE 2</strong></li>
-            <ul id="Table2"></ul>
-            <li><strong>TABLE 3</strong></li> 
-            <ul id="Table3"></ul>
+            <button style="background-color: darkgray;">Add Product</button><br><br><br>
+            <h1>Products</h1>
+            <ul id="ul"></ul>
+            <h4>Total Value Worth of Products:<span id="totalValue">0</span></h4>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="APIjs.js"></script>

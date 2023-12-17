@@ -1,8 +1,8 @@
-const product=(a,b)=>a*b;
-console.log(product(2,5));
-const student={
-    name:'Rahul',
-    age:45,
-    profession:'teacher'
-}
-console.log(student);
+const array = ['apple', 'oranges' , ' ', 'mango', ' ' , 'lemon'];
+console.log(array.map(value =>{
+    if(value===' '){
+        return 'Empty String';
+    }else{
+        return value
+    }
+}))

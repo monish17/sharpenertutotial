@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; 
+}
+.contact-fieldset{
+    border: 5px solid #51515ac1;
+    padding: 25px;
+    width: 100%;
+}
+hr {
+    height: 3px; /* Adjust the thickness */
+    border: none; /* Remove default border */
+    background-color: black; /* Set line color */
+}
+h2{
+    text-align: center;
+}
+h3{
+    text-align: center;        
+}

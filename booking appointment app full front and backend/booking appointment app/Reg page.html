@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{background-color:grey;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .centered-fieldset{
+            text-align: center;
+            margin: 0 auto;
+            
+        }
+        input[type="text"]{
+            width: 300px;
+        }
+        input[type="email"]{
+            width: 300px;
+        }
+        input[type="number"]{
+            width: 300px;
+        }
+        input[type="datetime-local"]{
+            width: 300px;
+        }
+        button{
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    //code for booking app
+    <fieldset style="background-color:rgba(142, 131, 131, 0.653);" class="centered-fieldset">
+        <h1 style="text-align: center;">BOOK A CALL</h1>
+        <p style="text-align: center;">BOOK A CALL SLOT OUR REPRESENTATIVE WILL CALL YOU WITHIN ONE HOUR OF SELECTED TIME</p>
+        <form id="myform">
+          <div class="msg"></div>
+            <label for="name">Name</label> <br>
+            <input type="text" id="name" name="Name"> <br><br>
+            <label for="email">Email</label> <br>
+            <input type="email" id="email" name="email"><br><br>
+            <label for="phonenumber">phonenumber</label> <br>
+            <input type="number" id="phonenumber" name="phonenumber"> <br><br>
+            <label for="date and time">Time for call</label> <br>
+            <input type="datetime-local" id="schedule" name="Timeforcall"> <br> <br>
+            <button style="background-color: darkgray;">GET A CALL</button><br>
+            <ul id="ul"></ul>
+
+
+        </form>
+    </fieldset>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="reg_page1.js">
+    </script>
+</body>
+</html>

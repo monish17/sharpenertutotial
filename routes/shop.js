@@ -16,6 +16,11 @@ router.get('/cart', shopController.getCart);
 
 router.post('/cart',shopController.postCart);
 
+<<<<<<< HEAD
+=======
+router.post('/cart-delete-item',shopController.postCartDeleteProduct);
+
+>>>>>>> 1b71c54c9a8c1f520a239041f11928deccd87590
 router.get('/orders', shopController.getOrders);
 
 router.get('/checkout', shopController.getCheckout);

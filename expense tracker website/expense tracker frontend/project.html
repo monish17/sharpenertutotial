@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+    <style>
+        .centered-fieldset{
+            text-align: center;
+            border: 5px solid #000;
+            margin: auto;
+            padding: auto;
+            background-color: #f0f0f0;
+            
+        }
+    </style>
+</head>
+<body>
+    <fieldset class="centered-fieldset">
+        <form id="form">
+            <input type="hidden" id="uniqueId" name="uniqueId" value="">
+            <label for="expense-amount">Choose Expense Amount</label><br>
+            <input type="number" id="expenseAmount" class="Expense-input" name="Expense"><br>
+            <label for="description">Description</label><br>
+            <input list="Description" id="description" class="Expense-input" name="Description">
+            <datalist id="Description">
+                <option value="Travel">
+                <option value="Movies">
+                <option value="Education Expense">
+                <option value="Fuel Cost">
+            </datalist><br>
+            <label for="category">Expense category</label><br>
+            <input list="Expenses" id="category" class="Expense-input" name="Category">
+            <datalist id="Expenses">
+                <option value="Food Expense">
+                <option value="Entertainment">
+                <option value="Rental Expense">
+                <option value="Traveling Expense">
+            </datalist><br>
+            <button>Add Expense</button>
+            <ul id="ul"></ul>
+        </form>
+    </fieldset>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
+    <script src="JSproject.js"></script>
+    
+</body>
+</html>

@@ -28,8 +28,7 @@ exports.postAddProduct = (req, res, next) => {
   })
   .then(result =>{
     res.redirect('/products')
-    console.log(result);
->>>>>>> 1b71c54c9a8c1f520a239041f11928deccd87590
+    console.log(result)
   })
   .catch(err =>{
     console.log(err);

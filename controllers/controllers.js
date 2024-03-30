@@ -13,12 +13,13 @@ exports.SignInData = (req,res,next)=>{
             console.log(result);
             if(result){ 
               if(result.Password=== Password){
-                res.json({message:'login In successful'});
+                res.json({message:'User login In successful'});
               }else{
-                res.json({message:'Password Incorrect'});
+                res.status(401).json({message:'User not Authoried'});
               }
-            }
-            res.json({message:'Invalid User Not Found'});
+            }else{
+              res.status(404).json({message:'User Not Found'});
+            }   
     }).catch(err => {
         console.log(err);
         res.status(500).json({

@@ -33,11 +33,14 @@ function signInData(myobj){
     axios.post('http://localhost:8000/SignInData',myobj)
         .then((response)=>{
             console.log(response);
-            if(response.data.message==='Password Incorrect'||response.data.message==='Internal Server Error'||response.data.message==='Invalid User Not Found'){
-                showMessage(response.data.message);
-            }
+           
             Email.value=""
             Password.value=""
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err)
+            if(err.response.status===401||err.response.status===404||err.response.status===500){
+                showMessage(err.response.data.message);
+            }
+        });
 }

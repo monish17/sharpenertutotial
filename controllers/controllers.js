@@ -1,31 +1,28 @@
 const Product = require('../models/SignUpDataModel');
 
-exports.SignUpData = (req,res,next)=>{
+exports.SignInData = (req,res,next)=>{
     console.log("request arrived");
       console.log(req.body);
-      //const id = req.body.id;
-      const Name = req.body.Name;
       const Email = req.body.Email;
       const Password = req.body.Password;
-      Product.create({
-          Name:Name,
-          Email:Email,
-          Password:Password
-      }).then(result =>{
-        res.json({
-            SignUpData: { 
-                Name:Name,
-                Email:Email,
-                Password:Password
+      Product.findOne({
+        where: {
+            Email: Email
+        }
+      }).then(result => {
+            console.log(result);
+            if(result){ 
+              if(result.Password=== Password){
+                res.json({message:'login In successful'});
+              }else{
+                res.json({message:'Password Incorrect'});
+              }
             }
-        })
-        console.log(result);
-      }).catch(err =>{
-          console.log(err);
-          if(err.name='SequelizeUniqueConstraintError'){
-            res.json({message:'Name or Email Id Already registered'})
-          }else{
-            res.json({message:'Internal Server Error'})
-          }
-      })
-  }
+            res.json({message:'Invalid User Not Found'});
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            message: 'Internal Server Error'
+        });
+    });
+};

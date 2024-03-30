@@ -1,6 +1,5 @@
 
 const myform = document.querySelector('#myForm');
-const Name = document.querySelector('#Name');
 const  Email= document.querySelector("#Email");
 const msg = document.querySelector('#msg');
 const Password = document.querySelector('#Password');
@@ -11,15 +10,14 @@ myform.addEventListener('submit', onSubmit);
 function onSubmit(e) {
     e.preventDefault();
     //console.log(postLink.value, postDescription.value);
-    if (Name.value.trim() === '' || Email.value.trim() === ''|| Password.value.trim()==='') {
+    if (Email.value.trim() === ''|| Password.value.trim()==='') {
         showMessage('Please Enter All the Fields');
     } else {
         const myobj = {
-            Name:Name.value,
             Email:Email.value,
             Password:Password.value
         };
-        signUpData(myobj);
+        signInData(myobj);
     }
 }
 
@@ -31,14 +29,13 @@ function showMessage(message) {
         {msg.style.color='transparent'}, 3000);
 }
 
-function signUpData(myobj){
-    axios.post('http://localhost:8000/SignUpData',myobj)
+function signInData(myobj){
+    axios.post('http://localhost:8000/SignInData',myobj)
         .then((response)=>{
             console.log(response);
-            if(response.data.message==='Name or Email Id Already registered'||response.data.message==='Internal Server Error'){
+            if(response.data.message==='Password Incorrect'||response.data.message==='Internal Server Error'||response.data.message==='Invalid User Not Found'){
                 showMessage(response.data.message);
             }
-            Name.value=""
             Email.value=""
             Password.value=""
         })

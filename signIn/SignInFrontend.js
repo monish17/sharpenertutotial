@@ -33,6 +33,7 @@ function signInData(myobj){
     axios.post('http://localhost:8000/SignInData',myobj)
         .then((response)=>{
             console.log(response);
+            window.location.href="../Expense Tracker/ExpenseTracker.html"
         })
         .catch(err => {
             console.log(err)
@@ -40,6 +41,6 @@ function signInData(myobj){
                 showMessage(err.response.data.message);
             }
         });
-        Email.value=""
-        Password.value=""
+        // Email.value=""
+        // Password.value=""
 }

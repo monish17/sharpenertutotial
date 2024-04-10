@@ -33,6 +33,7 @@ function signInData(myobj){
     axios.post('http://localhost:8000/SignInData',myobj)
         .then((response)=>{
             console.log(response);
+            localStorage.setItem('Token',response.data.token);
             window.location.href="../Expense Tracker/ExpenseTracker.html"
         })
         .catch(err => {

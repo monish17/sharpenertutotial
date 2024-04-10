@@ -4,6 +4,7 @@ const description=document.querySelector('#description');
 const category=document.querySelector('#category');
 const ul=document.querySelector('#ul');
 myform.addEventListener('submit',onSubmit);
+const Token=localStorage.getItem('Token');
 function onSubmit(e){
     e.preventDefault();
     const msg = document.createElement('div');
@@ -18,7 +19,7 @@ function onSubmit(e){
             description:description.value,
             category:category.value,
         }
-        axios.post("http://localhost:8000/postData",myobj)
+        axios.post("http://localhost:8000/postData",myobj,{headers:{'Authorization':Token}})
             .then((Response)=>{
                 console.log('uploaded and arrived here');
                 console.log(Response.data);
@@ -47,7 +48,7 @@ function onSubmit(e){
     } 
 }
 window.addEventListener("DOMContentLoaded",()=>{
-    axios.get("http://localhost:8000/retrieveData")
+    axios.get("http://localhost:8000/retrieveData",{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response.data);
             for(var i=0;i<response.data.length;i++){
@@ -86,7 +87,7 @@ function showNewUserOnScreen(user) {
     hiddenId.value=user.id;
     console.log(hiddenId);
     li.appendChild(hiddenId);
-    li.appendChild(document.createTextNode(`${user.Expense_Amount} : ${user.category}`));
+    li.appendChild(document.createTextNode(`${user.Expense_Amount} :${user.description}: ${user.category}`));
     const separator=document.createTextNode(' ');
     li.appendChild(separator);
     const del=document.createElement('input');

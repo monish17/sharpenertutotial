@@ -3,6 +3,12 @@ const sequelize = require('../util/database');
 
 
 const SignUpModel = sequelize.define('SignUpData',{
+    ID:{
+        type:Sequelize.INTEGER,
+        unique:true,
+        autoIncrement:true,
+        primaryKey:true
+    },
     Name:{
         type : Sequelize.STRING,
         allowNull:false,
@@ -11,7 +17,6 @@ const SignUpModel = sequelize.define('SignUpData',{
     Email : {
       type :Sequelize.STRING,
       allowNull : false,
-      primaryKey:true,
       unique:true
     },
     Password: {

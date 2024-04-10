@@ -66,7 +66,7 @@ function deleteclick(e){
         const hiddenId = li.querySelector('input[type="hidden"]');
         const hiddenIdValue = hiddenId.value;
         console.log(hiddenIdValue);
-        axios.delete(`http://localhost:8000/deleteData/${hiddenIdValue}`,)
+        axios.delete(`http://localhost:8000/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token}})
             .then(response =>{
                 if(response.data.message === true){
                     li.remove();

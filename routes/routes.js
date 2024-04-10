@@ -15,6 +15,6 @@ router.post('/postData',userAuthenticate.authenticate,controller.postData);
 
 router.get('/retrieveData',userAuthenticate.authenticate,controller.retrieveData);
 
-router.delete('/deleteData/:hiddenIdValue',controller.deleteData);
+router.delete('/deleteData/:hiddenIdValue',userAuthenticate.authenticate,controller.deleteData);
 
 module.exports = router;

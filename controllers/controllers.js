@@ -93,7 +93,7 @@ exports.postData = (req,res,next)=>{
 }
 exports.retrieveData= (req,res,next)=>{
   console.log('request arrived');
-  ExpenseData.findAll({where:{SignUpDatumId:req.user}})
+  ExpenseData.findAll({where:{SignUpDatumID:req.user}})
     .then(data => {
         console.log(data);
         res.json(data);
@@ -108,9 +108,11 @@ exports.deleteData = (req,res,next)=>{
   console.log('delete request arrived');
   console.log(req.params);
   const id = req.params.hiddenIdValue;
+  const userId=req.user
   ExpenseData.destroy({
       where: {
-          id: id
+          id: id,
+          SignUpDatumID:userId
       }
   })
   .then(result => {

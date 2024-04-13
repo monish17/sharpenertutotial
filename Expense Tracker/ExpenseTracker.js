@@ -5,6 +5,7 @@ const category=document.querySelector('#category');
 const ul=document.querySelector('#ul');
 myform.addEventListener('submit',onSubmit);
 const Token=localStorage.getItem('Token');
+
 function onSubmit(e){
     e.preventDefault();
     const msg = document.createElement('div');
@@ -96,4 +97,36 @@ function showNewUserOnScreen(user) {
     li.appendChild(del);
     ul.appendChild(li);
     del.addEventListener('click',deleteclick);
+}
+
+document.getElementById('rzp-button').onclick = async function(e){
+    console.log('button is clicked');
+    const response=await axios.get('http://localhost:8000/premiummembership',{headers:{'Authorization':Token}});
+    console.log(response);
+    var options={
+        "key":response.data.key_id,
+        "order_id":response.data.order.id,
+        "handler":async function(response){
+            console.log(response);
+            await axios.post('http://localhost:8000/updateTransactionStatus',{
+                order_id:response.razorpay_order_id,
+                payment_id:response.razorpay_payment_id,
+                Response:response
+            },{headers:{'Authorization':Token}})
+
+            alert('you are a Premium User Now')
+        }
+    };
+    const rzpl=new Razorpay(options);
+    rzpl.open();
+    e.preventDefault();
+    rzpl.on('payment.failed',function(response){
+        console.log('response',response,"order id-",response.error.metadata.order_id);
+        axios.post('http://localhost:8000/updateTransactionStatus',{
+                order_id:response.error.metadata.order_id,
+                payment_id:response.error.metadata.payment_id,
+                Response:response
+            },{headers:{'Authorization':Token}})
+        alert('something went wrong');
+    });
 }

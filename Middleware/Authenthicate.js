@@ -8,14 +8,14 @@ const authenticate=(req,res,next)=>{
         const user=jwt.verify(Token,'dune17');
         console.log(user);
         console.log('userId>>>',user.userId);
-        // User.findByPk(user.userId).then(userTable=>{
-        //     //console.log(JSON.stringify(user));
-        //     console.log("userTable",userTable);
-        //     req.user=user.userId;
-        //     next()
-        // })
-        req.user=user.userId;
-        next()
+        User.findByPk(user.userId).then(userTable=>{
+            // console.log(JSON.stringify(user));
+            console.log("userTable",userTable);
+            req.user=userTable;
+            next()
+        })
+        // req.user=user;
+        // next()
     }
     catch(err){
         console.log(err);

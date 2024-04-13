@@ -67,7 +67,8 @@ exports.postData = (req,res,next)=>{
   console.log("request arrived in postData");
   console.log(req.body);
   console.log('req.user>>',req.user);
-    const userId=req.user;
+  console.log(req.user.dataValues);
+    const userId=req.user.dataValues.ID;
   console.log("userId:",userId);
     const Expense_Amount = req.body.Expense_Amount;
     const description = req.body.description;
@@ -93,7 +94,8 @@ exports.postData = (req,res,next)=>{
 }
 exports.retrieveData= (req,res,next)=>{
   console.log('request arrived');
-  ExpenseData.findAll({where:{SignUpDatumID:req.user}})
+  console.log(req.user);
+  ExpenseData.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
     .then(data => {
         console.log(data);
         res.json(data);
@@ -108,7 +110,7 @@ exports.deleteData = (req,res,next)=>{
   console.log('delete request arrived');
   console.log(req.params);
   const id = req.params.hiddenIdValue;
-  const userId=req.user
+  const userId=req.user.dataValues.ID;
   ExpenseData.destroy({
       where: {
           id: id,

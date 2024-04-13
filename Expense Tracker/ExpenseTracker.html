@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <title>Project</title>
     <style>
         .centered-fieldset{
@@ -13,9 +15,14 @@
             background-color: #f0f0f0;
             
         }
+        #rzp-button{
+            text-align: right;
+        }
     </style>
 </head>
 <body>
+    <button id="rzp-button">Buy Premium</button>
+    <script src="https://checkout.razopay.com/v1/checkout.js"></script>
     <fieldset class="centered-fieldset">
         <form id="form">
             <input type="hidden" id="uniqueId" name="uniqueId" value="">

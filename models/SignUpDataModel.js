@@ -22,7 +22,8 @@ const SignUpModel = sequelize.define('SignUpData',{
     Password: {
       type : Sequelize.STRING,
       allowNull : false,
-    }
+    },
+    isPremiumUser:Sequelize.BOOLEAN
   });
 
 

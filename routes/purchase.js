@@ -12,4 +12,6 @@ router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiumme
 
 router.post('/updateTransactionStatus',userAuthenticate.authenticate,purchase.updateTransactionStatus);
 
+
+
 module.exports = router;

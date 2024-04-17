@@ -3,6 +3,7 @@
 // const token=require('jsonwebtoken');
 
 // const ExpenseData = require('../models/ExpenseDataModel');
+const token=require('jsonwebtoken');
 
 const Razorpay=require('razorpay');
 
@@ -10,6 +11,7 @@ const Order=require('../models/orders');
 
 exports.premiummembership=async(req,res,next)=>{
     console.log(process.env.RAZORPAY_KEY_ID);
+    console.log('line14 in premiummembership congroller');
     try{
         var rzp=new Razorpay({
             key_id: process.env.RAZORPAY_KEY_ID,
@@ -22,6 +24,7 @@ exports.premiummembership=async(req,res,next)=>{
                 throw new Error(JSON.stringify(err)); 
             }
             req.user.createOrder({orderid:order.id,status:'PENDING'}).then(()=>{
+                console.log('line 27 creatingOrder is working');
                 return res.status(201).json({order,key_id:rzp.key_id});
             }).catch(err => {
                 throw new Error(err);
@@ -36,6 +39,8 @@ exports.premiummembership=async(req,res,next)=>{
 exports.updateTransactionStatus=(req,res)=>{
     try{
         const{payment_id,order_id}=req.body;
+        const user=req.user.dataValues.ID;
+        console.log(user);
         console.log(req.body);
         console.log(payment_id,order_id);  //
         if(req.body.Response && req.body.Response.error && req.body.Response.error.reason){
@@ -51,19 +56,10 @@ exports.updateTransactionStatus=(req,res)=>{
             })
         }else{
             Order.findOne({where:{orderid:order_id}}).then(order=>{
-                // order.update({paymentid:payment_id,status:'SUCCESSFUL'}).then(()=>{
-                //     req.user.update({isPremiumUser:true}).then(()=>{
-                //         return res.status(202).json({sucess:true,message:"Transaction Successful"});
-                //     }).catch((err)=>{
-                //         throw new Error(err);
-                //     })
-                // }).catch((err)=>{
-                //     throw new Error(err);
-                // })
                 const updateOrderPremium=order.update({paymentid:payment_id,status:'SUCCESSFUL'});
                 const updateUserPremium=req.user.update({isPremiumUser:true});
                 Promise.all([updateOrderPremium,updateUserPremium]).then(()=>{
-                    return res.status(202).json({sucess:true,message:"Transaction Successful"});
+                    return res.status(202).json({sucess:true,message:"Transaction Successful",token:generateAccessToken(user,true)});
                 }).catch((err)=>{
                     console.log(err);
                     throw new Error(err);
@@ -79,3 +75,7 @@ exports.updateTransactionStatus=(req,res)=>{
         
     }
 }
+
+function generateAccessToken(id,key){
+    return token.sign({userId:id,isPremiumUser:key},'dune17');
+  }

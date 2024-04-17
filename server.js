@@ -11,13 +11,15 @@ app.use(cors());
 app.use(bodyParser.json({ extended: false }));
 const routes = require('./routes/routes');
 const purchase=require('./routes/purchase');
+const premium=require('./routes/premium');
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
 app.use(routes);
-app.use(purchase);
+app.use('/purchase',purchase);
+app.use('/premium',premium);
 sequelize
     .sync()
     .then(result =>{

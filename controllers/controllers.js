@@ -4,13 +4,13 @@ const token=require('jsonwebtoken');
 
 const ExpenseData = require('../models/ExpenseDataModel');
 
-function generateAccessToken(id){
-  return token.sign({userId:id},'dune17');
+function generateAccessToken(id,key){
+  return token.sign({userId:id,isPremiumUser:key},'dune17');
 }
 
 exports.SignInData = async (req, res, next) => {
   console.log("request arrived");
-  console.log(req.body);
+  console.log("req.body>>>",req.body);
   const Email = req.body.Email;
   const Password = req.body.Password;
   try {
@@ -19,14 +19,18 @@ exports.SignInData = async (req, res, next) => {
               Email: Email
           }
       });
-      console.log(result);
+      console.log("result>>>",result);
       if (result) {
           bcrypt.compare(Password,result.Password,(err,response)=>{
             if(err){
               res.status(500).json({message:'something went wrong'});
             }
             if(response===true){
-              res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID)});
+              if(result.dataValues.isPremiumUser=== true){
+                res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,true)});
+              }else{
+                res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,null)});
+              }
             }else {
               res.status(401).json({ message: 'User not Authorized' });
           } 
@@ -42,21 +46,26 @@ exports.SignInData = async (req, res, next) => {
   }
 };
 
+
 exports.SignUpData = async (req, res, next) => {
-  console.log("request arrived");
-  console.log(req.body);
+  console.log("request arrived in signUpData");
+  //console.log(req.body);
   const Name = req.body.Name;
   const Email = req.body.Email;
   const Password = req.body.Password;
   try {
-    bcrypt.hash(Password,10,async(err,hash)=>{
-      //console.log(err)
-      await Product.create({Name,Email,Password:hash});
-      res.status(201).json({message:'sucessfully user registered'});
-    })
+    const hash = await new Promise((resolve, reject) => {
+      bcrypt.hash(Password, 10, (err, hash) => {
+        if (err) reject(err);
+        resolve(hash);
+      });
+    });
+
+    await Product.create({ Name, Email, Password: hash });
+    res.status(201).json({ message: 'Successfully user registered' });
   } catch (err) {
-      console.log(err);
-      if (err.name === 'SequelizeUniqueConstraintError') {
+      console.log("line 62>>>",err);
+      if (err.name==='SequelizeUniqueConstraintError') {
           res.json({ message: 'Name or Email Id Already registered' });
       } else {
           res.json({ message: 'Internal Server Error' });

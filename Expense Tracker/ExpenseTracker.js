@@ -3,6 +3,8 @@ const expenseAmount=document.querySelector('#expenseAmount');
 const description=document.querySelector('#description');
 const category=document.querySelector('#category');
 const ul=document.querySelector('#ul');
+const header=document.querySelector('#header');
+const premiumDiv=document.querySelector('#premiumDiv');
 myform.addEventListener('submit',onSubmit);
 const Token=localStorage.getItem('Token');
 
@@ -49,6 +51,13 @@ function onSubmit(e){
     } 
 }
 window.addEventListener("DOMContentLoaded",()=>{
+    const decodedToken=parseJwt (Token);
+    //bconsole.log(decodedToken);
+    if(decodedToken.isPremiumUser){
+        const button=document.getElementById('rzp-button');
+        button.remove();
+        premiumUser();
+    }
     axios.get("http://localhost:8000/retrieveData",{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response.data);
@@ -101,20 +110,25 @@ function showNewUserOnScreen(user) {
 
 document.getElementById('rzp-button').onclick = async function(e){
     console.log('button is clicked');
-    const response=await axios.get('http://localhost:8000/premiummembership',{headers:{'Authorization':Token}});
-    console.log(response);
+    const response=await axios.get('http://localhost:8000/purchase/premiummembership',{headers:{'Authorization':Token}});
+    //console.log(response);
     var options={
         "key":response.data.key_id,
         "order_id":response.data.order.id,
         "handler":async function(response){
             console.log(response);
-            await axios.post('http://localhost:8000/updateTransactionStatus',{
+            await axios.post('http://localhost:8000/purchase/updateTransactionStatus',{
                 order_id:response.razorpay_order_id,
                 payment_id:response.razorpay_payment_id,
                 Response:response
-            },{headers:{'Authorization':Token}})
-
+            },{headers:{'Authorization':Token}}).then((res)=>{
+                console.log(res);
+                localStorage.setItem("Token",res.data.token);
+            })
             alert('you are a Premium User Now')
+            const button=document.getElementById('rzp-button');
+            button.remove();
+            premiumUser();
         }
     };
     const rzpl=new Razorpay(options);
@@ -122,11 +136,51 @@ document.getElementById('rzp-button').onclick = async function(e){
     e.preventDefault();
     rzpl.on('payment.failed',function(response){
         console.log('response',response,"order id-",response.error.metadata.order_id);
-        axios.post('http://localhost:8000/updateTransactionStatus',{
+        axios.post('http://localhost:8000/purchase/updateTransactionStatus',{
                 order_id:response.error.metadata.order_id,
                 payment_id:response.error.metadata.payment_id,
                 Response:response
             },{headers:{'Authorization':Token}})
         alert('something went wrong');
     });
+}
+
+function premiumUser(){
+    const h2=document.createElement('h2');
+    h2.appendChild(document.createTextNode('You are a Premium User'));
+    header.appendChild(h2);
+    const button=document.createElement('button');
+    button.textContent='Show Leader Board';
+    premiumDiv.appendChild(button);
+    button.addEventListener('click', function() {
+        leaderBoardFunction();
+      });
+}
+
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+function leaderBoardFunction(){
+    console.log('clicked');
+    axios.get('http://localhost:8000/premium/leadershipBoard',{headers:{'Authorization':Token}}).then((response)=>{
+        console.log(response);
+        console.log(response.data[0]);
+        for(var i=0;i<response.data.length;i++){
+            generateleaderBoard(response.data[i])
+        }
+    }).catch()
+}
+function generateleaderBoard(response){
+    console.log(response);
+    const li=document.createElement('li');
+    li.appendChild(document.createTextNode(`${response.name}:   ${response.totalCost}`));
+    premiumDiv.appendChild(li);
+    // premiumDiv.appendChild(document.createElement('br'));
 }

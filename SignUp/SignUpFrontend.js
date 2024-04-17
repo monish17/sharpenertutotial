@@ -36,8 +36,11 @@ function signUpData(myobj){
             console.log(response);
             if(response.data.message==='Name or Email Id Already registered'||response.data.message==='Internal Server Error'){
                 showMessage(response.data.message);
+            }else{
+                window.location.href="../signIn/SignInFrontend.html"
             }
-            window.location.href="../signIn/SignInFrontend.html"
+            
+            
             // Name.value=""
             // Email.value=""
             // Password.value=""

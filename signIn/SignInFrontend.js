@@ -34,6 +34,7 @@ function signInData(myobj){
         .then((response)=>{
             console.log(response);
             localStorage.setItem('Token',response.data.token);
+            console.log(response.data.token);
             window.location.href="../Expense Tracker/ExpenseTracker.html"
         })
         .catch(err => {

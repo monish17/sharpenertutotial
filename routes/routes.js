@@ -20,8 +20,8 @@ router.delete('/deleteData/:hiddenIdValue',userAuthenticate.authenticate,control
 
 // router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiummembership);
 
-router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiummembership);
+// router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiummembership);
 
-router.post('/updateTransactionStatus',userAuthenticate.authenticate,purchase.updateTransactionStatus);
+// router.post('/updateTransactionStatus',userAuthenticate.authenticate,purchase.updateTransactionStatus);
 
 module.exports = router;

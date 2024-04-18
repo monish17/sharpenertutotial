@@ -180,7 +180,7 @@ function leaderBoardFunction(){
 function generateleaderBoard(response){
     console.log(response);
     const li=document.createElement('li');
-    li.appendChild(document.createTextNode(`${response.Name}:   ${response.totalCost}`));
+    li.appendChild(document.createTextNode(`${response.Name}:   ${response.TotalExpense}`));
     premiumDiv.appendChild(li);
     // premiumDiv.appendChild(document.createElement('br'));
 }

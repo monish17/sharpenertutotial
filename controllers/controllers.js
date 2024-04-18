@@ -4,13 +4,15 @@ const token=require('jsonwebtoken');
 
 const ExpenseData = require('../models/ExpenseDataModel');
 
+const User=require('../models/SignUpDataModel');
+
 function generateAccessToken(id,key){
   return token.sign({userId:id,isPremiumUser:key},'dune17');
 }
 
 exports.SignInData = async (req, res, next) => {
-  console.log("request arrived");
-  console.log("req.body>>>",req.body);
+  console.log("request arrived in SignInData");
+  // console.log("req.body>>>",req.body);
   const Email = req.body.Email;
   const Password = req.body.Password;
   try {
@@ -73,12 +75,12 @@ exports.SignUpData = async (req, res, next) => {
   }
 };
 exports.postData = (req,res,next)=>{
-  console.log("request arrived in postData");
-  console.log(req.body);
-  console.log('req.user>>',req.user);
-  console.log(req.user.dataValues);
+    console.log("request arrived in postData");
+    console.log(req.body);
+    console.log('req.user>>',req.user);
+    console.log(req.user.dataValues);
     const userId=req.user.dataValues.ID;
-  console.log("userId:",userId);
+    console.log("userId:",userId);
     const Expense_Amount = req.body.Expense_Amount;
     const description = req.body.description;
     const category = req.body.category;
@@ -88,6 +90,19 @@ exports.postData = (req,res,next)=>{
         category: category,
         SignUpDatumID:userId
     }).then(result =>{
+      console.log('line 93>>>>>',result);
+      try{
+        User.increment('TotalExpense', {
+          by: parseInt(result.dataValues.Expense_Amount),
+          where:{ ID: result.dataValues.SignUpDatumID }
+        })
+        .then((re)=>{
+          console.log(re);
+        })
+        .catch(err => console.log(err))
+      }catch(err){
+        console.log('error>>>>>>>>>>>>>>',err);
+      }
       res.json({
           expense: { 
               id: result.id, 

@@ -23,7 +23,12 @@ const SignUpModel = sequelize.define('SignUpData',{
       type : Sequelize.STRING,
       allowNull : false,
     },
-    isPremiumUser:Sequelize.BOOLEAN
+    isPremiumUser:Sequelize.BOOLEAN,
+    TotalExpense:{
+      type:Sequelize.INTEGER,
+      allowNull:false,
+      defaultValue:0
+    }
   });
 
 

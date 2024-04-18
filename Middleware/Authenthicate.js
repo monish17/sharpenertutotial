@@ -6,16 +6,14 @@ const authenticate=(req,res,next)=>{
         const Token=req.header('Authorization');
         console.log('token',Token);
         const user=jwt.verify(Token,'dune17');
-        console.log(user);
-        console.log('userId>>>',user.userId);
+        // console.log(user);
+        // console.log('userId>>>',user.userId);
         User.findByPk(user.userId).then(userTable=>{
             // console.log(JSON.stringify(user));
-            console.log("userTable",userTable);
+            // console.log("userTable",userTable);
             req.user=userTable;
             next()
         })
-        // req.user=user;
-        // next()
     }
     catch(err){
         console.log(err);

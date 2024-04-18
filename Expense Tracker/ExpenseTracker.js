@@ -73,11 +73,16 @@ window.addEventListener("DOMContentLoaded",()=>{
 function deleteclick(e){
     const li = e.target.closest('li');
     if (li) {
+        console.log(li);
         const hiddenId = li.querySelector('input[type="hidden"]');
         const hiddenIdValue = hiddenId.value;
-        console.log(hiddenIdValue);
-        axios.delete(`http://localhost:8000/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token}})
+        //console.log(hiddenIdValue);
+        console.log(li.textContent);
+        const expenseAmountValue = li.textContent.split(':')[0].trim();
+        console.log(expenseAmountValue);
+        axios.delete(`http://localhost:8000/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token},data:{ expenseAmount: expenseAmountValue }})
             .then(response =>{
+                console.log()
                 if(response.data.message === true){
                     li.remove();
                     console.log("data deleted");

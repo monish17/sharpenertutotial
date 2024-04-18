@@ -6,6 +6,9 @@ const ExpenseData = require('../models/ExpenseDataModel');
 
 const User=require('../models/SignUpDataModel');
 
+const sequelize=require('../util/database');
+
+
 function generateAccessToken(id,key){
   return token.sign({userId:id,isPremiumUser:key},'dune17');
 }
@@ -74,48 +77,48 @@ exports.SignUpData = async (req, res, next) => {
       }
   }
 };
-exports.postData = (req,res,next)=>{
-    console.log("request arrived in postData");
-    console.log(req.body);
-    console.log('req.user>>',req.user);
-    console.log(req.user.dataValues);
-    const userId=req.user.dataValues.ID;
-    console.log("userId:",userId);
-    const Expense_Amount = req.body.Expense_Amount;
-    const description = req.body.description;
-    const category = req.body.category;
-    ExpenseData.create({
-        Expense_Amount:Expense_Amount,
-        description  : description ,
-        category: category,
-        SignUpDatumID:userId
-    }).then(result =>{
-      console.log('line 93>>>>>',result);
-      try{
-        User.increment('TotalExpense', {
-          by: parseInt(result.dataValues.Expense_Amount),
-          where:{ ID: result.dataValues.SignUpDatumID }
-        })
-        .then((re)=>{
-          console.log(re);
-        })
-        .catch(err => console.log(err))
-      }catch(err){
-        console.log('error>>>>>>>>>>>>>>',err);
+exports.postData = async (req, res, next) => {
+  console.log("request arrived in postData");
+  const userId = req.user.dataValues.ID;
+  const Expense_Amount = req.body.Expense_Amount;
+  const description = req.body.description;
+  const category = req.body.category;
+  const transact = await sequelize.transaction(); 
+
+  try {
+      const result = await ExpenseData.create({
+          Expense_Amount: Expense_Amount,
+          description: description,
+          category: category,
+          SignUpDatumID: userId
+      },{transaction:transact});
+      //console.log('line 93>>>>>', result);
+      try {
+          await User.increment('TotalExpense', {
+              by: parseInt(result.dataValues.Expense_Amount),
+              where: { ID: result.dataValues.SignUpDatumID },
+              transaction:transact
+          });
+      //console.log('line 108>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+          await transact.commit();
+          res.json({
+            expense: {
+                id: result.dataValues.id,
+                Expense_Amount: Expense_Amount,
+                description: description,
+                category: category
+            }
+          });
+      } catch (err) {
+          console.log(err);
+          await transact.rollback();
       }
-      res.json({
-          expense: { 
-              id: result.id, 
-              Expense_Amount: Expense_Amount,
-              description: description,
-              category: category
-          }
-      })
-      console.log(result);
-    }).catch(err =>{
-        console.log(err);
-    })
-}
+  } catch (err) {
+      console.log(err);
+      await transact.rollback(); 
+  }
+};
+
 exports.retrieveData= (req,res,next)=>{
   console.log('request arrived');
   console.log(req.user);
@@ -130,27 +133,38 @@ exports.retrieveData= (req,res,next)=>{
     });
 }
 
-exports.deleteData = (req,res,next)=>{
+exports.deleteData = async(req,res,next)=>{
   console.log('delete request arrived');
-  console.log(req.params);
+  console.log(req.body);
+  //console.log(req.user);
   const id = req.params.hiddenIdValue;
   const userId=req.user.dataValues.ID;
-  ExpenseData.destroy({
+  const transact = await sequelize.transaction(); 
+  try{
+    const result=await ExpenseData.destroy({
       where: {
           id: id,
           SignUpDatumID:userId
-      }
-  })
-  .then(result => {
+      },
+      transaction:transact
+    })
+    try{
+      await User.decrement('TotalExpense', {
+        by: parseInt(req.body.expenseAmount),
+        where: { ID: userId },
+        transaction: transact
+      });
+      await transact.commit()
       if (result === 0) {
-          return res.status(404).json({ message: 'id not found' });
-        }
-
+        return res.status(404).json({ message: 'id not found' });
+      }
       res.status(200).json({ message: true });
-  })
-  .catch(err => {
+    }catch(err){
       console.log(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-  });
-
+      await transact.rollback()
+    }
+  }catch(err){
+    res.status(500).json({ error: 'Internal Server Error' });
+    await transact.rollback()
+  }
 }

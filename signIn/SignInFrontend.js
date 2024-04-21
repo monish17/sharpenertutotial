@@ -3,6 +3,8 @@ const myform = document.querySelector('#myForm');
 const  Email= document.querySelector("#Email");
 const msg = document.querySelector('#msg');
 const Password = document.querySelector('#Password');
+// const forgotPassword=document.querySelector('#forgotPassword');
+const forgotPasswordDiv=document.querySelector('#forgotPasswordDiv');
 
 
 myform.addEventListener('submit', onSubmit);
@@ -46,3 +48,25 @@ function signInData(myobj){
         // Email.value=""
         // Password.value=""
 }
+
+function openModel() {
+    document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    document.getElementById('modal').style.display = 'block';
+   document.getElementById('forgotPassword').style.display='none';
+   document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
+  }
+
+  function closeModal() {
+    document.body.style.backgroundColor = '';
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('forgotPassword').style.display='block';
+  }
+
+  document.getElementById('sendEmail').onclick= function(e){
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('forgotPassword').style.display='block';
+    document.body.style.backgroundColor = '';
+    console.log('button is clicked');
+    const emailInput=document.getElementById('emailInput');
+    axios.post('http://localhost:8000/password/forgotpassword',{"email":emailInput.value}).then().catch()
+  }

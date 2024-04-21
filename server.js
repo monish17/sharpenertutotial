@@ -12,6 +12,7 @@ app.use(bodyParser.json({ extended: false }));
 const routes = require('./routes/routes');
 const purchase=require('./routes/purchase');
 const premium=require('./routes/premium');
+const password=require('./routes/password');
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
@@ -20,6 +21,7 @@ Order.belongsTo(User);
 app.use(routes);
 app.use('/purchase',purchase);
 app.use('/premium',premium);
+app.use('/password',password);
 sequelize
     .sync()
     .then(result =>{

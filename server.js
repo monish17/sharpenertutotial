@@ -4,6 +4,7 @@ const sequelize = require('./util/database');
 const User=require('./models/SignUpDataModel');
 const Expense=require('./models/ExpenseDataModel');
 const Order=require('./models/orders');
+const request=require("./models/forgotPassword");
 var cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -18,6 +19,8 @@ Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+User.hasMany(request);
+request.belongsTo(User);
 app.use(routes);
 app.use('/purchase',purchase);
 app.use('/premium',premium);

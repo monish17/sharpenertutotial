@@ -1,7 +1,5 @@
 const User=require('../models/SignUpDataModel');
 
-const ExpenseData=require('../models/ExpenseDataModel');
-const sequelize = require('../util/database');
 // const { default: orders } = require('razorpay/dist/types/orders');
 
 exports.getLeadershipBoard=async (req,res,next)=>{

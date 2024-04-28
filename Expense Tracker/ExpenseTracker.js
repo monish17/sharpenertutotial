@@ -1,3 +1,4 @@
+
 const myform=document.querySelector('#form');
 const expenseAmount=document.querySelector('#expenseAmount');
 const description=document.querySelector('#description');
@@ -188,4 +189,19 @@ function generateleaderBoard(response){
     li.appendChild(document.createTextNode(`${response.Name}:   ${response.TotalExpense}`));
     premiumDiv.appendChild(li);
     // premiumDiv.appendChild(document.createElement('br'));
+}
+
+document.getElementById("expenseReport").onclick=async function(e){
+    console.log('button is clicked');
+    try{
+        const response=await axios.get('http://localhost:8000/Expense/ExpenseReport',{headers:{'Authorization':Token}});
+        // console.log(response);
+        // console.log(response.data.expense);
+        const stringifyedData=JSON.stringify(response.data.expense)
+        localStorage.setItem("stringifiedData",stringifyedData);
+        window.location.href="../Premium Features/DaytoDayExpense.html"
+    }catch(err){
+        console.log(err);
+    }
+    
 }

@@ -14,6 +14,7 @@ const routes = require('./routes/routes');
 const purchase=require('./routes/purchase');
 const premium=require('./routes/premium');
 const password=require('./routes/password');
+const expense=require('./routes/Expense');
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
@@ -25,6 +26,7 @@ app.use(routes);
 app.use('/purchase',purchase);
 app.use('/premium',premium);
 app.use('/password',password);
+app.use('/Expense',expense);
 sequelize
     .sync()
     .then(result =>{

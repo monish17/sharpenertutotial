@@ -121,10 +121,10 @@ exports.postData = async (req, res, next) => {
 
 exports.retrieveData= (req,res,next)=>{
   console.log('request arrived');
-  console.log(req.user);
+  //console.log(req.user);
   ExpenseData.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
     .then(data => {
-        console.log(data);
+        //console.log(data);
         res.json(data);
       })
     .catch(err => {

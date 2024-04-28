@@ -5,6 +5,7 @@ const authenticate=(req,res,next)=>{
     try{
         const Token=req.header('Authorization');
         console.log('token',Token);
+        console.log("request arrived in authentication ");
         const user=jwt.verify(Token,'dune17');
         // console.log(user);
         // console.log('userId>>>',user.userId);

@@ -8,10 +8,49 @@ const User=require('../models/SignUpDataModel');
 
 const sequelize=require('../util/database');
 
+const AWS=require('aws-sdk');
+
+const { Body } = require('sib-api-v3-sdk');
+
+const UserServices=require('../services/userServices');
+
+const S3Services=require('../services/s3Services');
+
 
 function generateAccessToken(id,key){
   return token.sign({userId:id,isPremiumUser:key},'dune17');
 }
+
+function uploadToS3(data,fileName){
+  const BUCKET_NAME='expensetrackingapp1712';
+  const IAM_USER_KEY='AKIAW3MD7JP7EURBO53B';
+  const IAM_USER_SECRET='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';
+
+  let s3bucket=new AWS.S3({
+    accessKeyId:IAM_USER_KEY,
+    secretAccessKey:IAM_USER_SECRET
+  })
+
+    var params={
+      Bucket:BUCKET_NAME,
+      Key:fileName,
+      Body:data,
+      ACL:'public-read'
+    }
+    return new Promise((resolve,reject)=>{
+      s3bucket.upload(params,(err,s3respnse)=>{
+        if(err){
+          console.log("Something went wrong",err);
+          reject(err);
+        }else{
+          console.log("success",s3respnse);
+          resolve(s3respnse.Location);
+        }
+      })
+    })
+    
+}
+
 
 exports.SignInData = async (req, res, next) => {
   console.log("request arrived in SignInData");
@@ -167,4 +206,22 @@ exports.deleteData = async(req,res,next)=>{
     res.status(500).json({ error: 'Internal Server Error' });
     await transact.rollback()
   }
+}
+
+exports.downloadData=async (req,res,next)=>{
+  try{
+    console.log('request arrived in downloadData>>>>>>>>>>>');
+    const expenses=await UserServices.getExpenses(req);
+    const stringfiedData=JSON.stringify(expenses); 
+    const userId=req.user.dataValues.ID;
+    const fileName=`expense${userId}/${new Date()}.txt`;
+    const fileUrl= await S3Services.uploadToS3(stringfiedData,fileName);
+    console.log(fileUrl);
+    const urlTable=await S3Services.S3URLTable(fileUrl.Location,userId,fileUrl.key);
+    res.status(200).json({fileUrl:fileUrl.Location,success:true,FileName:fileName});    
+  }catch(err){
+    console.log(err);
+    res.status(500).json({fileUrl:'',success:false,err:err});
+  }
+                          
 }

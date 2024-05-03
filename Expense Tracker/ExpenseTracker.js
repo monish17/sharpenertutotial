@@ -6,6 +6,7 @@ const category=document.querySelector('#category');
 const ul=document.querySelector('#ul');
 const header=document.querySelector('#header');
 const premiumDiv=document.querySelector('#premiumDiv');
+const downloadedFilesDiv=document.querySelector('#downloadedFilesDiv');
 myform.addEventListener('submit',onSubmit);
 const Token=localStorage.getItem('Token');
 
@@ -69,6 +70,13 @@ window.addEventListener("DOMContentLoaded",()=>{
         .catch((error)=>{
             console.log(error)
         })
+        axios.get("http://localhost:8000/Expense/getURL",{headers:{'Authorization':Token}})
+        .then((response)=>{
+            for(let i=0;i<response.data.FileNameArray.length;i++){
+                downnloadedFiles(response.data.FileNameArray[i],response.data.URLArray[i]);
+            }
+        })
+        .catch(err => console.log(err))
 })
 
 function deleteclick(e){
@@ -152,16 +160,29 @@ document.getElementById('rzp-button').onclick = async function(e){
 }
 
 function premiumUser(){
-    const h2=document.createElement('h2');
+    const h2 = document.createElement('h2');
     h2.appendChild(document.createTextNode('You are a Premium User'));
     header.appendChild(h2);
-    const button=document.createElement('button');
-    button.textContent='Show Leader Board';
-    premiumDiv.appendChild(button);
-    button.addEventListener('click', function() {
+    
+    const showLeaderButton = document.createElement('button');
+    showLeaderButton.textContent = 'Show Leader Board'; 
+    premiumDiv.appendChild(showLeaderButton);
+    premiumDiv.appendChild(document.createElement('br'));
+    premiumDiv.appendChild(document.createElement('br'));
+    showLeaderButton.addEventListener('click', function() {
+        console.log("button is clicked");
         leaderBoardFunction();
-      });
+    });
+
+    const downloadButton = document.createElement('button');
+    downloadButton.textContent = "Download File";
+    downloadButton.setAttribute('id', 'downloadButton'); // Set ID
+    downloadButton.addEventListener('click', downloadFile); 
+    premiumDiv.appendChild(downloadButton);
+    premiumDiv.appendChild(document.createElement('br'));
+    premiumDiv.appendChild(document.createElement('br'));
 }
+
 
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -191,17 +212,49 @@ function generateleaderBoard(response){
     // premiumDiv.appendChild(document.createElement('br'));
 }
 
-document.getElementById("expenseReport").onclick=async function(e){
-    console.log('button is clicked');
-    try{
-        const response=await axios.get('http://localhost:8000/Expense/ExpenseReport',{headers:{'Authorization':Token}});
-        // console.log(response);
-        // console.log(response.data.expense);
-        const stringifyedData=JSON.stringify(response.data.expense)
-        localStorage.setItem("stringifiedData",stringifyedData);
-        window.location.href="../Premium Features/DaytoDayExpense.html"
-    }catch(err){
-        console.log(err);
-    }
+// document.getElementById("expenseReport").onclick=async function(e){
+//     console.log('button is clicked');
+//     try{
+//         const response=await axios.get('http://localhost:8000/Expense/ExpenseReport',{headers:{'Authorization':Token}});
+//         // console.log(response);
+//         // console.log(response.data.expense);
+//         const stringifyedData=JSON.stringify(response.data.expense)
+//         localStorage.setItem("stringifiedData",stringifyedData);
+//         window.location.href="../Premium Features/DaytoDayExpense.html"
+//     }catch(err){
+//         console.log(err);
+//     }
     
+// }
+
+function downloadFile(){
+    console.log("button is working");
+    axios.get('http://localhost:8000/download', { headers: {"Authorization" : Token} })
+    .then((response) => {
+        console.log(response);
+    if(response.status === 200){
+        var a = document.createElement("a");
+        a.href = response.data.fileUrl;
+        a.download = 'myexpense.csv';
+        a.click();
+        const name=response.data.FileName;
+        const link=response.data.fileUrl;
+        downnloadedFiles(name,link);
+    } else {
+        throw new Error(response.data.message)
+    }
+
+    })
+    .catch((err) => {
+        console.log(err);
+});
+}
+
+
+function downnloadedFiles(name,link){
+    const a = document.createElement('a');
+    a.textContent=name;
+    a.href=link;
+    downloadedFilesDiv.appendChild(a);
+    downloadedFilesDiv.appendChild(document.createElement('br'));
 }

@@ -18,6 +18,8 @@ router.get('/retrieveData',userAuthenticate.authenticate,controller.retrieveData
 
 router.delete('/deleteData/:hiddenIdValue',userAuthenticate.authenticate,controller.deleteData);
 
+router.get('/Download',userAuthenticate.authenticate,controller.downloadData);
+
 // router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiummembership);
 
 // router.get('/premiummembership',userAuthenticate.authenticate,purchase.premiummembership);

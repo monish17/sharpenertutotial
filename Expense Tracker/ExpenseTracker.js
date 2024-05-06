@@ -7,8 +7,11 @@ const ul=document.querySelector('#ul');
 const header=document.querySelector('#header');
 const premiumDiv=document.querySelector('#premiumDiv');
 const downloadedFilesDiv=document.querySelector('#downloadedFilesDiv');
-myform.addEventListener('submit',onSubmit);
 const Token=localStorage.getItem('Token');
+const paginationDiv=document.querySelector("#paginationDiv");
+const leaderBoardTable=document.querySelector('#Leaderboard-Table');
+const downloadedFilesFieldset=document.querySelector('#downloadedFiles');
+myform.addEventListener('submit',onSubmit);
 
 function onSubmit(e){
     e.preventDefault();
@@ -41,8 +44,11 @@ function onSubmit(e){
                 del.type='button';
                 del.value='Delete';
                 li.appendChild(del);
-                ul.appendChild(li);
                 del.addEventListener('click',deleteclick);
+                ul.insertBefore(li, ul.firstChild);
+                if (ul.childNodes.length > 2) {
+                    ul.removeChild(ul.lastChild); 
+                }
             })
             .catch((err)=>{
                 console.log(err);
@@ -53,30 +59,26 @@ function onSubmit(e){
     } 
 }
 window.addEventListener("DOMContentLoaded",()=>{
+    let page= localStorage.getItem('CurrentPage')|| 1 ;
     const decodedToken=parseJwt (Token);
-    //bconsole.log(decodedToken);
+    //console.log(decodedToken);
     if(decodedToken.isPremiumUser){
         const button=document.getElementById('rzp-button');
         button.remove();
         premiumUser();
     }
-    axios.get("http://localhost:8000/retrieveData",{headers:{'Authorization':Token}})
+    axios.get("http://localhost:8000/retrieveData?page="+page,{headers:{'Authorization':Token}})
         .then((response)=>{
-            console.log(response.data);
-            for(var i=0;i<response.data.length;i++){
-                showNewUserOnScreen(response.data[i])
+            console.log(response);
+            console.log(response.data.expense);
+            pagination(response.data);
+            for(var i=0;i<response.data.expense.length;i++){
+                showNewUserOnScreen(response.data.expense[i])
             }
         })
         .catch((error)=>{
             console.log(error)
         })
-        axios.get("http://localhost:8000/Expense/getURL",{headers:{'Authorization':Token}})
-        .then((response)=>{
-            for(let i=0;i<response.data.FileNameArray.length;i++){
-                downnloadedFiles(response.data.FileNameArray[i],response.data.URLArray[i]);
-            }
-        })
-        .catch(err => console.log(err))
 })
 
 function deleteclick(e){
@@ -160,18 +162,17 @@ document.getElementById('rzp-button').onclick = async function(e){
 }
 
 function premiumUser(){
-    const h2 = document.createElement('h2');
-    h2.appendChild(document.createTextNode('You are a Premium User'));
-    header.appendChild(h2);
+    const h4 = document.createElement('h4');
+    h4.appendChild(document.createTextNode('You are a Premium User'));
+    header.appendChild(h4);
     
     const showLeaderButton = document.createElement('button');
     showLeaderButton.textContent = 'Show Leader Board'; 
-    premiumDiv.appendChild(showLeaderButton);
-    premiumDiv.appendChild(document.createElement('br'));
-    premiumDiv.appendChild(document.createElement('br'));
+    premiumDiv.prepend(showLeaderButton);
     showLeaderButton.addEventListener('click', function() {
         console.log("button is clicked");
         leaderBoardFunction();
+        showLeaderButton.remove();
     });
 
     const downloadButton = document.createElement('button');
@@ -181,6 +182,13 @@ function premiumUser(){
     premiumDiv.appendChild(downloadButton);
     premiumDiv.appendChild(document.createElement('br'));
     premiumDiv.appendChild(document.createElement('br'));
+    axios.get("http://localhost:8000/Expense/getURL",{headers:{'Authorization':Token}})
+        .then((response)=>{
+            for(let i=0;i<response.data.FileNameArray.length;i++){
+                downnloadedFiles(response.data.FileNameArray[i],response.data.URLArray[i]);
+            }
+        })
+        .catch(err => console.log(err))
 }
 
 
@@ -196,6 +204,7 @@ function parseJwt (token) {
 
 function leaderBoardFunction(){
     console.log('clicked');
+
     axios.get('http://localhost:8000/premium/leadershipBoard',{headers:{'Authorization':Token}}).then((response)=>{
         console.log(response);
         console.log(response.data[0]);
@@ -207,8 +216,11 @@ function leaderBoardFunction(){
 function generateleaderBoard(response){
     console.log(response);
     const li=document.createElement('li');
+    li.style.listStyleType='none';
+    //li.style.textAlign="justify";
     li.appendChild(document.createTextNode(`${response.Name}:   ${response.TotalExpense}`));
-    premiumDiv.appendChild(li);
+    leaderBoardTable.style.display='block';
+    leaderBoardTable.appendChild(li);
     // premiumDiv.appendChild(document.createElement('br'));
 }
 
@@ -255,6 +267,63 @@ function downnloadedFiles(name,link){
     const a = document.createElement('a');
     a.textContent=name;
     a.href=link;
-    downloadedFilesDiv.appendChild(a);
-    downloadedFilesDiv.appendChild(document.createElement('br'));
+    downloadedFilesFieldset.appendChild(a);
+    downloadedFilesFieldset.appendChild(document.createElement('br'));
+}
+
+function pagination(data){
+    paginationDiv.innerHTML="";
+    const hasPreviousPage=data.hasPreviousPage;
+    const hasNextPage=data.hasNextPage;
+    const nextPage=data.nextPage;
+    const currentPage=data.currentPage;
+    const lastPage=data.lastPage;
+    if(hasPreviousPage){
+        const btn=document.createElement('button');
+        btn.innerHTML=`${hasPreviousPage}`;
+        btn.addEventListener('click', () => {
+            getData(hasPreviousPage);
+        });
+        paginationDiv.appendChild(btn);
+    }
+    const btn=document.createElement('button');
+    btn.innerHTML=`${currentPage}`;
+    btn.addEventListener('click', () => {
+        getData(currentPage);
+    });
+    paginationDiv.appendChild(btn);
+    if(hasNextPage){
+        const btn=document.createElement('button');
+        btn.innerHTML=`${nextPage}`;
+        btn.addEventListener('click', () => {
+            getData(nextPage);
+        });
+        paginationDiv.appendChild(btn);
+        if(nextPage<lastPage){
+            const btn=document.createElement('button');
+            btn.innerHTML=`${lastPage}`;
+            btn.addEventListener('click', () => {
+                getData(lastPage);
+            });
+            paginationDiv.appendChild(btn);
+        }
+    }
+}
+
+function getData(page){
+    console.log(`${page} button is clicked`);
+    localStorage.setItem('CurrentPage',page);
+    ul.innerHTML=" ";
+    axios.get("http://localhost:8000/retrieveData?page="+page,{headers:{'Authorization':Token}})
+        .then((response)=>{
+            console.log(response);
+            console.log(response.data.expense);
+            pagination(response.data);
+            for(var i=0;i<response.data.expense.length;i++){
+                showNewUserOnScreen(response.data.expense[i])
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
 }

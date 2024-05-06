@@ -13,19 +13,31 @@
             margin: auto;
             padding: auto;
             background-color: #f0f0f0;
-            
+            width: 1000px;
         }
         #rzp-button{
             text-align: right;
+        }
+        #Leaderboard-Table{
+            display: none;
+        }
+        #downloadedFiles{
+            text-align: justify;
+            border: 2px solid #000;
+            /* margin: auto;
+            padding: auto; */
+            background-color: #f0f0f0;
+            width: 500px;
         }
     </style>
 </head>
 <body>
     <button id="rzp-button">Buy Premium</button>
     <script src="https://checkout.razopay.com/v1/checkout.js"></script>
+    <div id="header"></div>
     <fieldset class="centered-fieldset">
         <form id="form">
-            <div id="header"></div>
+            <h2>Expense Tracker</h2>
             <input type="hidden" id="uniqueId" name="uniqueId" value="">
             <label for="expense-amount">Choose Expense Amount</label><br>
             <input type="number" id="expenseAmount" class="Expense-input" name="Expense"><br>
@@ -46,12 +58,24 @@
                 <option value="Traveling Expense">
             </datalist><br>
             <button>Add Expense</button>
-            <ul id="ul"></ul>
+            
         </form>
     </fieldset><br>
-    
-    <br><br><div id="premiumDiv"></div>
-    <br><div id="downloadedFilesDiv"></div>
+    <fieldset id="Expense-fieldset" class="centered-fieldset">
+        <h3>Your Expense Details</h3>
+        <ul id="ul"></ul>
+        <br><div id="paginationDiv"></div>
+    </fieldset>
+    <br><br><div id="premiumDiv">
+        <div class="centered-fieldset" id="Leaderboard-Table">
+            <h3>Leader Board</h3>
+        </div>
+    </div>
+    <br><br><br><div id="downloadedFilesDiv">
+        <fieldset id="downloadedFiles">
+            <h3 style="text-align: center;">Downloaded Files</h3>
+        </fieldset>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
     <script src="ExpenseTracker.js"></script>
     

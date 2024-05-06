@@ -128,17 +128,36 @@ exports.postData = async (req, res, next) => {
 };
 
 exports.retrieveData= (req,res,next)=>{
-  console.log('request arrived');
+  console.log('request arrived in retrive Data');
   //console.log(req.user);
-  ExpenseData.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
-    .then(data => {
-        //console.log(data);
-        res.json(data);
+  const currentPage=parseInt(req.query.page,10);
+  const limit=2
+  const offset=(currentPage-1)*limit;
+  let totalItems=0;
+  ExpenseData.count({where:{SignUpDatumID:req.user.dataValues.ID}})
+    .then((items)=>{
+      totalItems=items;
+      return ExpenseData.findAll({where:{SignUpDatumID:req.user.dataValues.ID},
+        limit:limit,
+        offset:offset        
       })
-    .catch(err => {
+      .then(data => {
+        res.json({
+        expense:data,
+        hasPreviousPage:currentPage-1,
+        hasNextPage:limit*currentPage < totalItems,
+        nextPage:currentPage+1,
+        currentPage:currentPage,
+        lastPage:Math.ceil(totalItems/limit)
+        });
+      })
+      .catch(err => {
         console.log(err);
         res.status(500).json({ error: 'Internal Server Error' });
-    });
+      });
+    })
+    .catch(err => console.log(err)
+  );
 }
 
 exports.deleteData = async(req,res,next)=>{

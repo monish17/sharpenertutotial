@@ -131,7 +131,7 @@ exports.retrieveData= (req,res,next)=>{
   console.log('request arrived in retrive Data');
   //console.log(req.user);
   const currentPage=parseInt(req.query.page,10);
-  const limit=2
+  const limit=parseInt(req.query.pageLimit,10);
   const offset=(currentPage-1)*limit;
   let totalItems=0;
   ExpenseData.count({where:{SignUpDatumID:req.user.dataValues.ID}})

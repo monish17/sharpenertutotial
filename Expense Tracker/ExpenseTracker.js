@@ -11,8 +11,12 @@ const Token=localStorage.getItem('Token');
 const paginationDiv=document.querySelector("#paginationDiv");
 const leaderBoardTable=document.querySelector('#Leaderboard-Table');
 const downloadedFilesFieldset=document.querySelector('#downloadedFiles');
+const rowsCategory=document.querySelector('#rowsCategory');
+let page= localStorage.getItem('CurrentPage')|| 1 ;
+rowsCategory.addEventListener('change', function(event) {
+    DynamicPagination();
+});
 myform.addEventListener('submit',onSubmit);
-
 function onSubmit(e){
     e.preventDefault();
     const msg = document.createElement('div');
@@ -59,15 +63,16 @@ function onSubmit(e){
     } 
 }
 window.addEventListener("DOMContentLoaded",()=>{
-    let page= localStorage.getItem('CurrentPage')|| 1 ;
+    //let page= localStorage.getItem('CurrentPage')|| 1 ;
     const decodedToken=parseJwt (Token);
+    const pageLimit=localStorage.getItem('Page-Limit') || 2;
     //console.log(decodedToken);
     if(decodedToken.isPremiumUser){
         const button=document.getElementById('rzp-button');
         button.remove();
         premiumUser();
     }
-    axios.get("http://localhost:8000/retrieveData?page="+page,{headers:{'Authorization':Token}})
+    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);
@@ -313,8 +318,9 @@ function pagination(data){
 function getData(page){
     console.log(`${page} button is clicked`);
     localStorage.setItem('CurrentPage',page);
-    ul.innerHTML=" ";
-    axios.get("http://localhost:8000/retrieveData?page="+page,{headers:{'Authorization':Token}})
+    ul.innerHTML="";
+    const pageLimit=localStorage.getItem('Page-Limit') || 2;
+    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);
@@ -326,4 +332,24 @@ function getData(page){
         .catch((error)=>{
             console.log(error)
         })
+}
+
+function DynamicPagination(){
+    console.log("function started",rowsCategory.value);
+    localStorage.setItem('Page-Limit',rowsCategory.value);
+    const pageLimit=rowsCategory.value;
+    ul.innerHTML="";
+    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+        .then((response)=>{
+            console.log(response);
+            console.log(response.data.expense);
+            pagination(response.data);
+            for(var i=0;i<response.data.expense.length;i++){
+                showNewUserOnScreen(response.data.expense[i])
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+
 }

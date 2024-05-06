@@ -29,6 +29,11 @@
             background-color: #f0f0f0;
             width: 500px;
         }
+        #Page-Input{
+            /* text-align: right; */
+            position: relative;
+            left: 76%;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +66,16 @@
             
         </form>
     </fieldset><br>
+    <div id="Page-Input" >
+    <label for="rowsCategory" >Rows per page</label>
+    <input list="noOfPages" id="rowsCategory" class="Page-Input" name="rowsCategory" style="width: 40px;">
+    <datalist id="noOfPages">
+        <option value="5">
+        <option value="10">
+        <option value="15">
+        <option value="20">
+    </datalist>
+    </div>
     <fieldset id="Expense-fieldset" class="centered-fieldset">
         <h3>Your Expense Details</h3>
         <ul id="ul"></ul>

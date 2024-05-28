@@ -54,4 +54,3 @@ sequelize
             app.listen(process.env.PORT_NUMBER||8000);
         })
     .catch(err => console.log(err));
-

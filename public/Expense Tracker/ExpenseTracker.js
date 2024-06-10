@@ -31,7 +31,7 @@ function onSubmit(e){
             description:description.value,
             category:category.value,
         }
-        axios.post("http://localhost:8000/postData",myobj,{headers:{'Authorization':Token}})
+        axios.post("http://localhost:8000/routes/postData",myobj,{headers:{'Authorization':Token}})
             .then((Response)=>{
                 console.log('uploaded and arrived here');
                 console.log(Response.data);
@@ -72,7 +72,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         button.remove();
         premiumUser();
     }
-    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get("http://localhost:8000/routes/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);
@@ -96,7 +96,7 @@ function deleteclick(e){
         console.log(li.textContent);
         const expenseAmountValue = li.textContent.split(':')[0].trim();
         console.log(expenseAmountValue);
-        axios.delete(`http://localhost:8000/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token},data:{ expenseAmount: expenseAmountValue }})
+        axios.delete(`http://localhost:8000/routes/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token},data:{ expenseAmount: expenseAmountValue }})
             .then(response =>{
                 console.log()
                 if(response.data.message === true){
@@ -246,7 +246,7 @@ function generateleaderBoard(response){
 
 function downloadFile(){
     console.log("button is working");
-    axios.get('http://localhost:8000/download', { headers: {"Authorization" : Token} })
+    axios.get('http://localhost:8000/routes/download', { headers: {"Authorization" : Token} })
     .then((response) => {
         console.log(response);
     if(response.status === 200){
@@ -320,7 +320,7 @@ function getData(page){
     localStorage.setItem('CurrentPage',page);
     ul.innerHTML="";
     const pageLimit=localStorage.getItem('Page-Limit') || 2;
-    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get("http://localhost:8000/routes/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);
@@ -339,7 +339,7 @@ function DynamicPagination(){
     localStorage.setItem('Page-Limit',rowsCategory.value);
     const pageLimit=rowsCategory.value;
     ul.innerHTML="";
-    axios.get("http://localhost:8000/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get("http://localhost:8000/routes/retrieveData?page="+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);

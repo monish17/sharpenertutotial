@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-const helmet = require('helmet');
+//const helmet = require('helmet'); //disabled helmet 
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 const User = require('./models/SignUpDataModel');
@@ -20,21 +20,21 @@ app.use(cors());
 app.use(bodyParser.json({ extended: false }));
 
 // Custom CSP settings with helmet
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://checkout.razorpay.com"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'"],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      frameSrc: ["'self'", "https://api.razorpay.com"],
-      upgradeInsecureRequests: [],
-    },
-  },
-}));
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://checkout.razorpay.com"],
+//       styleSrc: ["'self'", "'unsafe-inline'"],
+//       imgSrc: ["'self'"],
+//       connectSrc: ["'self'"],
+//       fontSrc: ["'self'"],
+//       objectSrc: ["'none'"],
+//       frameSrc: ["'self'", "https://api.razorpay.com"],
+//       upgradeInsecureRequests: [], //commenting this line to avoid https problem in the CSP
+//     },
+//   },
+// }));
 
 // Compression middleware
 app.use(compression());

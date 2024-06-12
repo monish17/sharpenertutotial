@@ -32,7 +32,7 @@ function showMessage(message) {
 }
 
 function signInData(myobj){
-    axios.post('http://localhost:8000/routes/SignInData',myobj)
+    axios.post('http://44.223.35.27:8000/routes/SignInData',myobj)
         .then((response)=>{
             console.log(response);
             localStorage.setItem('Token',response.data.token);
@@ -68,5 +68,5 @@ function openModel() {
     document.body.style.backgroundColor = '';
     console.log('button is clicked');
     const emailInput=document.getElementById('emailInput');
-    axios.post('http://localhost:8000/password/forgotpassword',{"email":emailInput.value}).then().catch()
+    axios.post('http://44.223.35.27:8000/password/forgotpassword',{"email":emailInput.value}).then().catch()
   }

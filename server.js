@@ -82,6 +82,7 @@ S3URLTable.belongsTo(User);
 sequelize
   .sync()
   .then(result => {
+    console.log('Sequelize is running');
     app.listen(process.env.PORT_NUMBER || 8000);
   })
   .catch(err => console.log(err));

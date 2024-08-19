@@ -86,7 +86,7 @@ S3URLTable.belongsTo(User);
 
 
 sequelize
-  .sync({force:true})
+  .sync()
   .then(result => {
     console.log('Sequelize is running');
     // http.createServer({key:privateKey,cert:certificate},app)

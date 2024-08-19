@@ -15,7 +15,9 @@ const AWS=require('aws-sdk');
 
 const UserServices=require('../DownloadFile/UserService');
 
-const S3Services=require('../DownloadFile/S3Services');
+
+const AZUR1=require('../DownloadFile/AZURE');
+
 
 const S3URLTable=require('../models/S3URLModel');
 
@@ -307,9 +309,9 @@ exports.downloadData = async (req, res, next) => {
     const fileName = `${userId}_Expense Report_${new Date().toISOString()}.txt`; // Added .txt extension for clarity
   
     try {
-      const fileUrl = await S3Services.uploadToS3(stringfiedExpense, fileName);
+      const fileUrl = await AZUR1.AzureBlob(stringfiedExpense, fileName);
       console.log(fileUrl);
-      const urlTable=await S3Services.S3URLTable(fileUrl,userId,fileName);
+    //   const urlTable=await S3Services.S3URLTable(fileUrl,userId,fileName);
       res.status(200).json({ fileUrl,fileName, success: true });
     } catch (err) {
       console.log('Error uploading to S3:', err);

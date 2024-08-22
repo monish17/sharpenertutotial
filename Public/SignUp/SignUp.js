@@ -29,7 +29,7 @@ function showMessage(message) {
 }
 
 function signUpData(myobj){
-    axios.post(`http://${config.PORT_ADDRESS}:3000/routes/SignUpData`,myobj)
+    axios.post(`http://52.172.46.245:3000/routes/SignUpData`,myobj)
         .then((response)=>{
             console.log(response);
             if(response.data.message==='Name or Email Id Already registered'||response.data.message==='Internal Server Error'){

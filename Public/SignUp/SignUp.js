@@ -1,4 +1,4 @@
-import config from '../CONFIG.js';
+
 
 const myform = document.querySelector('#signUpForm');
 const Name = document.querySelector('#nameInput');

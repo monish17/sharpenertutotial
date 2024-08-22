@@ -1,4 +1,4 @@
-import config from '../CONFIG.js';
+
 
 document.getElementById('sendEmail').onclick= function(e){
     console.log('button is clicked');

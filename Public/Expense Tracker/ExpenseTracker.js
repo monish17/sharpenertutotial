@@ -1,4 +1,4 @@
-import config from '../CONFIG.js';
+
 const balance= document.querySelector('#balance');
 const incomeAmount=document.querySelector('#inc-amt');
 const expenseAmount=document.querySelector('#exp-amt');

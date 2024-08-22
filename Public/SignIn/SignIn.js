@@ -1,4 +1,4 @@
-import config from '../CONFIG.js';
+
 const myform = document.querySelector('#signInForm');
 const  Email= document.querySelector("#signInEmailInput");
 const msg = document.querySelector('#msg');

@@ -15,7 +15,7 @@ const User=require('./models/SignUpDataModel');
 const Expense=require('./models/ExpenseTrackingModel');
 const Order=require('./models/orders');
 const forgotPassword = require('./models/ForgotPassword');
-const S3URLTable=require('./models/S3URLModel');
+const S3URLTable=require('./models/AZUREURLTABLE');
 //const S3Services=require('./DownloadFile/UserService');
 
 // const privateKey=fs.readFileSync('server.key');
@@ -55,7 +55,7 @@ const accessLogStream = fs.createWriteStream(
   { flags: 'a' }
 );
 app.use(morgan('combined', { stream: accessLogStream }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'Public')));
 
 const routes = require('./routes/routes');
 const password=require('./routes/password');
@@ -86,7 +86,7 @@ S3URLTable.belongsTo(User);
 
 
 sequelize
-  .sync()
+  .sync({force:true})
   .then(result => {
     console.log('Sequelize is running');
     // http.createServer({key:privateKey,cert:certificate},app)

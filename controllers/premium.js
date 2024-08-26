@@ -7,13 +7,13 @@ exports.getLeadershipBoard=async (req,res,next)=>{
     try{
         const leadershipBoard=await User.findAll({
             attributes:['ID','Name','TotalExpense'],
-            group: ['ID'],
+            group: ['ID','Name','TotalExpense'],
             order:[['TotalExpense','DESC']]
         });
         console.log('line 11 >>>>>>>>>>>>>',leadershipBoard);
          res.status(200).json(leadershipBoard);
     }catch(err){
-        console.log(err);
+        console.log("Error in getLeadership function",err);
     }
     
 }

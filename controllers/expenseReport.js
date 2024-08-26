@@ -1,6 +1,7 @@
 const ExpenseData = require('../models/ExpenseTrackingModel');
 
-const S3URLModel=require('../models/S3URLModel');
+const AZUREURLTABLE=require('../models/AZUREURLTABLE');
+const { AZUREURLTable } = require('../DownloadFile/AZURE');
 
 exports.ExpenseReport=async(req,res,next)=>{
     console.log("Request Arrived in the Expense Report function");
@@ -16,7 +17,7 @@ exports.ExpenseReport=async(req,res,next)=>{
 exports.getURl= async(req,res,next)=>{
     console.log("request arrived in the getUrl controller>>>>>>>>>>>>");
     try{
-        const response=await S3URLModel.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
+        const response=await AZUREURLTABLE.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
         console.log(response);
         let URL=[];
         let FileName=[];

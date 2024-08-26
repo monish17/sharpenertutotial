@@ -1,6 +1,6 @@
 const AWS=require('aws-sdk');
 
-const S3URLTable=require('../models/S3URLModel');
+const AZUREURLTable=require('../models/AZUREURLTABLE');
 
 exports.uploadToS3=async(data, fileName)=> {
   console.log('Request Arrived in S3', data);

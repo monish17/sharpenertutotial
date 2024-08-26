@@ -1,4 +1,4 @@
-const ExpenseData = require('../models/S3URLModel');
+const ExpenseData = require('../models/AZUREURLTABLE');
 exports.getExpenses=(req)=>{
     return ExpenseData.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
 }

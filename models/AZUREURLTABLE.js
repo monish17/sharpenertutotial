@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const S3URLTable= sequelize.define('S3URLTable',{
+const AZUREURLTable= sequelize.define('AZUREURLTable',{
     ID:{
         type:Sequelize.INTEGER,
         unique:true,
@@ -19,4 +19,4 @@ const S3URLTable= sequelize.define('S3URLTable',{
     }
 });
 
-module.exports=S3URLTable;
+module.exports=AZUREURLTable;

@@ -10,16 +10,12 @@ const bcrypt=require('bcrypt');
 
 const token=require('jsonwebtoken');
 
-const AWS=require('aws-sdk');
-
-
-const UserServices=require('../DownloadFile/UserService');
 
 
 const AZUR1=require('../DownloadFile/AZURE');
 
 
-const S3URLTable=require('../models/S3URLModel');
+const AZUREURLTABLE=require('../models/AZUREURLTABLE');
 
 function generateAccessToken(id,key){
     const SALT=process.env.SALT;
@@ -173,15 +169,6 @@ exports.retrieveData= async(req,res,next)=>{
     })
     .catch(err => console.log(err)
   );
-    // ExpenseTrackerModel.findAll({where:{SignUpDatumID:req.user.dataValues.ID}})
-    // .then((data)=>{
-    //     res.json({
-    //         message:"Got data",
-    //         Data:data
-    //     })
-    // }).catch(err=>{
-    //     console.log(err);
-    // })
 }
 
 exports.deleteData = async(req,res,next)=>{
@@ -311,7 +298,7 @@ exports.downloadData = async (req, res, next) => {
     try {
       const fileUrl = await AZUR1.AzureBlob(stringfiedExpense, fileName);
       console.log(fileUrl);
-    //   const urlTable=await S3Services.S3URLTable(fileUrl,userId,fileName);
+      const urlTable=await AZUREURLTABLE.AZUREURLTABLE(fileUrl,userId,fileName);
       res.status(200).json({ fileUrl,fileName, success: true });
     } catch (err) {
       console.log('Error uploading to S3:', err);

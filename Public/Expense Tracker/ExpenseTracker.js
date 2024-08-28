@@ -49,7 +49,7 @@ function onSubmit(e){
             amount:amount.value
         };
         console.log(myobj);
-        axios.post(`http://52.172.50.43/routes/PostData`,myobj,{headers:{'Authorization':Token}})
+        axios.post(`http://52.172.50.43:3000/routes/PostData`,myobj,{headers:{'Authorization':Token}})
             .then((Response)=>{
                 console.log('Data is posted');
                 console.log(Response.data.expense);
@@ -65,7 +65,7 @@ function onSubmit(e){
 
 window.addEventListener("DOMContentLoaded",()=>{
     const pageLimit=localStorage.getItem('Page-Limit') || 8;
-    axios.get(`http://52.172.50.43/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             //parseJwt function to find whether premium or not
@@ -134,7 +134,7 @@ function deleteclick(e){
         const hiddenIdValue = hiddenId.value;
         const span=li.querySelector('span');
         const spanTextContent=span.textContent;
-        axios.delete(`http://52.172.50.43/routes/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token},data:{ expenseAmount: spanTextContent,type:DataType.value}})
+        axios.delete(`http://52.172.50.43:3000/routes/deleteData/${hiddenIdValue}`,{headers:{'Authorization':Token},data:{ expenseAmount: spanTextContent,type:DataType.value}})
             .then(response =>{
                 console.log(response)
                 if(response.data.message === true){
@@ -151,7 +151,7 @@ function deleteclick(e){
 }
 
 function UpdateExpense(){
-    axios.get(`http://52.172.50.43/routes/getTotalTransaction`,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/getTotalTransaction`,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response.data);
             incomeAmount.textContent=`₹ ${response.data.TotalIncome}`;
@@ -167,14 +167,14 @@ function UpdateExpense(){
 
 document.getElementById('rzp-button').onclick = async function(e){
     console.log('button is clicked');
-    const response=await axios.get(`http://52.172.50.43/purchase/premiummembership`,{headers:{'Authorization':Token}});
+    const response=await axios.get(`http://52.172.50.43:3000/purchase/premiummembership`,{headers:{'Authorization':Token}});
     //console.log(response);
     var options={
         "key":response.data.key_id,
         "order_id":response.data.order.id,
         "handler":async function(response){
             console.log(response);
-            await axios.post(`http://52.172.50.43/purchase/updateTransactionStatus`,{
+            await axios.post(`http://52.172.50.43:3000/purchase/updateTransactionStatus`,{
                 order_id:response.razorpay_order_id,
                 payment_id:response.razorpay_payment_id,
                 Response:response
@@ -194,7 +194,7 @@ document.getElementById('rzp-button').onclick = async function(e){
     e.preventDefault();
     rzpl.on('payment.failed',function(response){
         console.log('response',response,"order id-",response.error.metadata.order_id);
-        axios.post(`http://52.172.50.43/purchase/updateTransactionStatus`,{
+        axios.post(`http://52.172.50.43:3000/purchase/updateTransactionStatus`,{
                 order_id:response.error.metadata.order_id,
                 payment_id:response.error.metadata.payment_id,
                 Response:response
@@ -284,7 +284,7 @@ function leaderBoardFunction(){
     premiumDiv.appendChild(ContentDiv);
    
 
-    axios.get(`http://52.172.50.43/premium/leadershipBoard`,{headers:{'Authorization':Token}}).then((response)=>{
+    axios.get(`http://52.172.50.43:3000/premium/leadershipBoard`,{headers:{'Authorization':Token}}).then((response)=>{
         for(var i=0;i<response.data.length;i++){
             generateleaderBoard(response.data[i])
         }
@@ -334,7 +334,7 @@ function parseJwt (token) {
 
 function downloadFile(){
     console.log("button is working");
-    axios.get(`http://52.172.50.43/routes/download`, { headers: {"Authorization" : Token} })
+    axios.get(`http://52.172.50.43:3000/routes/download`, { headers: {"Authorization" : Token} })
     .then((response) => {
         console.log(response);
     if(response.status === 200){
@@ -365,7 +365,7 @@ function downloadReport(){
     h2.textContent='Expense Report';
     document.querySelector('#model-content').appendChild(ReportButton);
     document.querySelector('#model-content').appendChild(h2);
-    axios.get(`http://52.172.50.43/routes/retrieveExpenseReport`,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/retrieveExpenseReport`,{headers:{'Authorization':Token}})
         .then((response)=>{
             creatingTable(response.data.Data);
             const DownloadedFilesHistory=document.createElement('button');
@@ -497,7 +497,7 @@ function creatingTable(data){
 
 function downloadReportHistory(){
     console.log('DownloadReport function Arrived>>>>>>>>>>');
-    axios.get(`http://52.172.50.43/routes/DownloadsHistory`,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/DownloadsHistory`,{headers:{'Authorization':Token}})
     .then((response)=>{
         console.log(response);
         document.getElementById('FileHistoryButton').remove();
@@ -537,7 +537,7 @@ function DynamicPagination(){
     localStorage.setItem('Page-Limit',rowsCategory.value);
     const pageLimit=rowsCategory.value;
     ul.innerHTML="";
-    axios.get(`http://52.172.50.43/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);
@@ -600,7 +600,7 @@ function getData(page){
     localStorage.setItem('CurrentPage',page);
     const pageLimit=localStorage.getItem('Page-Limit') || 2;
     ul.innerHTML="";
-    axios.get(`http://52.172.50.43/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
+    axios.get(`http://52.172.50.43:3000/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{
             console.log(response);
             console.log(response.data.expense);

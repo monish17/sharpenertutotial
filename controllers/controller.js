@@ -150,7 +150,8 @@ exports.retrieveData= async(req,res,next)=>{
       totalItems=items;
       return ExpenseTrackerModel.findAll({where:{SignUpDatumID:req.user.dataValues.ID},
         limit:limit,
-        offset:offset        
+        offset:offset,
+        order:[['createdAt','DESC']]      
       })
       .then(data => {
         res.json({
@@ -298,7 +299,7 @@ exports.downloadData = async (req, res, next) => {
     try {
       const fileUrl = await AZUR1.AzureBlob(stringfiedExpense, fileName);
       console.log(fileUrl);
-      const urlTable=await AZUREURLTABLE.AZUREURLTABLE(fileUrl,userId,fileName);
+      const urlTable=await AZUR1.AZUREURLTable(fileUrl,userId,fileName);
       res.status(200).json({ fileUrl,fileName, success: true });
     } catch (err) {
       console.log('Error uploading to S3:', err);

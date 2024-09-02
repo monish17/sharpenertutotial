@@ -265,3 +265,13 @@ input[type="number"]{
     color: white;
     border-radius: 5px;
 }
+#ExpenseTable{
+    border-spacing: 5px;
+    border-collapse: separate; 
+}
+#ExpenseTable tr:nth-of-type(even) {
+    background-color:darkgray;
+}
+
+
+

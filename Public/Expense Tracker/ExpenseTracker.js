@@ -52,9 +52,9 @@ function onSubmit(e){
         axios.post(`http://52.172.50.43:3000/routes/PostData`,myobj,{headers:{'Authorization':Token}})
             .then((Response)=>{
                 console.log('Data is posted');
-                console.log(Response.data.expense);
-                CreatingLiTag(Response.data.expense);
-                //DynamicPagination();
+                // // console.log(Response.data.expense);
+                // CreatingLiTag(Response.data.expense);
+                DynamicPagination();
                 description.value="";
                 amount.value="";
             }).catch((err)=>{
@@ -114,12 +114,12 @@ function CreatingLiTag(data){
     btn.classList.add('btn-del');
     li.appendChild(btn);
     console.log(li);
-    ul.prepend(li);
+    ul.appendChild(li);
     btn.addEventListener('click',deleteclick);
     UpdateExpense();
-    // DynamicPagination;
+    //pagination(data);
     const numberOfItems = ul.children.length;
-    const pageLimit=localStorage.getItem('Page-Limit') || 2;
+    const pageLimit=localStorage.getItem('Page-Limit') || 5;
     if(numberOfItems>pageLimit){
         ul.removeChild(ul.lastElementChild);
     }
@@ -267,16 +267,20 @@ function leaderBoardFunction(){
     console.log('clicked');
     premiumDiv.style.backgroundColor='#eaeaea';
     premiumDiv.style.color='#333333';
+    premiumDiv.style.borderLeftWidth='150px';
+    premiumDiv.style.borderLeftColor='darkgrey';
+    premiumDiv.style.borderLeftStyle='groove';
     const deletebutton=document.createElement('button');
     deletebutton.textContent='X';
     deletebutton.setAttribute('id','PremiumDivButton');
     const h2=document.createElement('h2');
-    h2.textContent='LeaderBoard of All the Users';
+    h2.textContent='Total Expenses of All the Users';
     h2.style.position='relative';
     h2.style.top='80px';
     const ContentDiv=document.createElement('div');
     ContentDiv.style.position='relative';
     ContentDiv.style.top='120px';
+    ContentDiv.style.left='-75px';
     ContentDiv.setAttribute('id','contentDiv');
     //appending
     premiumDiv.appendChild(deletebutton);
@@ -442,7 +446,7 @@ function creatingTable(data){
         const row = document.createElement('tr');
 
         const dateCell = document.createElement('td');
-        const date = new Date(item.createdAt).toLocaleDateString(); // Format the date
+        const date = new Date(item.createdAt).toLocaleDateString();
         dateCell.textContent = date;
         row.appendChild(dateCell);
 
@@ -598,7 +602,7 @@ function pagination(data){
 function getData(page){
     console.log(`${page} button is clicked`);
     localStorage.setItem('CurrentPage',page);
-    const pageLimit=localStorage.getItem('Page-Limit') || 2;
+    const pageLimit=localStorage.getItem('Page-Limit') || 5;
     ul.innerHTML="";
     axios.get(`http://52.172.50.43:3000/routes/retrieveData?page=`+page+ "&pageLimit=" + pageLimit,{headers:{'Authorization':Token}})
         .then((response)=>{

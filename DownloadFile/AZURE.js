@@ -1,4 +1,4 @@
-const AZUREURLTable=require('../models/AZUREURLTABLE');
+const AZUREURLTable1=require('../models/AZUREURLTABLE');
 const { BlobServiceClient, BlobSASPermissions, SASProtocol, generateBlobSASQueryParameters } = require('@azure/storage-blob');
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.CONNECTION_STRING;
@@ -44,7 +44,7 @@ function generateBlobSAS(blobClient) {
 exports.AZUREURLTable=async(url,userId,name,res)=>{
     return new Promise((resolve,reject)=>{
         try{
-            const AZUREURLTable= AZUREURLTable.create({
+            const AZUREURLTable= AZUREURLTable1.create({
                 URL:url,
                 SignUpDatumID:userId,
                 FileName:name

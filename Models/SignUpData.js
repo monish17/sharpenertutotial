@@ -1,0 +1,34 @@
+const Sequelize = require('sequelize');
+const sequelize = require('../util/database');
+
+
+const SignUpModel = sequelize.define('GropChatUserDetails',{
+    ID:{
+        type:Sequelize.INTEGER,
+        unique:true,
+        autoIncrement:true,
+        primaryKey:true
+    },
+    Name:{
+        type : Sequelize.STRING,
+        allowNull:false,
+        unique:true
+    },
+    Email : {
+      type :Sequelize.STRING,
+      allowNull : false,
+      unique:true
+    },
+    PhoneNumber:{
+        type :Sequelize.BIGINT,
+        allowNull:false,
+        unique:true
+    },
+    Password: {
+      type : Sequelize.STRING,
+      allowNull : false,
+    }
+  });
+
+
+  module.exports=SignUpModel;

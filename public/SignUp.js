@@ -11,6 +11,9 @@ myform.addEventListener('submit', onSubmit);
 function onSubmit(e) {
     e.preventDefault();
     //console.log(postLink.value, postDescription.value);
+    if(Name.value===''||Email.value===''||PhoneNumber.value===''||Password.value===''){
+        showMessage('Enter all the fields');
+    }
     const myobj = {
         Name:Name.value,
         Email:Email.value,
@@ -29,19 +32,19 @@ function showMessage(message) {
 }
 
 function signUpData(myobj){
-    axios.post(`http://52.172.50.43:3000/routes/SignUpData`,myobj)
+    axios.post(`http://localhost:3000/routes/SignUpData`,myobj)
         .then((response)=>{
             console.log(response);
             if(response.data.message==='Name or Email Id Already registered'||response.data.message==='Internal Server Error'){
                 showMessage(response.data.message);
             }else{
-                window.location.href="../SignIn/SignIn.html";
+                console.log('SignUp Successfull');
             }
             
             
-            // Name.value=""
-            // Email.value=""
-            // Password.value=""
+            Name.value=""
+            Email.value=""
+            Password.value=""
         })
         .catch(err => console.log(err));
 }

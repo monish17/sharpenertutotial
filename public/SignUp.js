@@ -35,6 +35,7 @@ function signUpData(myobj){
     axios.post(`http://localhost:3000/routes/SignUpData`,myobj)
         .then((response)=>{
             console.log(response);
+            alert('SignUp Successful');
             if(response.data.message==='Name or Email Id Already registered'||response.data.message==='Internal Server Error'){
                 showMessage(response.data.message);
             }else{

@@ -12,7 +12,12 @@ const User=require('./Models/SignUpData');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin:"*",
+    methods:['GET','POST','DELETE'],
+    credentials:true
+}
+));
 app.use(bodyParser.json({ extended: false }));
 
 const routes = require('./Routes/Router');

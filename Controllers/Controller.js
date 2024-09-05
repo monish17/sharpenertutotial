@@ -4,6 +4,14 @@ const User=require('../Models/SignUpData');
 
 const bcrypt=require('bcrypt');
 
+const token=require('jsonwebtoken');
+
+function generateAccessToken(id,key){
+    const SALT=process.env.SALT;
+    return token.sign({userId:id,isPremiumUser:key},SALT);
+  }
+
+
 exports.SignUpData=async(req,res,next)=>{
     console.log("request arrived in signUpData");
     console.log(req.body);
@@ -30,3 +38,42 @@ exports.SignUpData=async(req,res,next)=>{
         }
     }
 }
+
+exports.SignInData=async(req,res,next)=>{
+    console.log('Request Arrived in SignInData controller');
+    console.log("req.body>>>",req.body);
+    const Email = req.body.Email;
+    const Password = req.body.Password;
+    try {
+        const result = await User.findOne({
+            where: {
+                Email: Email
+            }
+        });
+        console.log("result>>>",result);
+        if (result) {
+            bcrypt.compare(Password,result.Password,(err,response)=>{
+                if(err){
+                res.status(500).json({message:'something went wrong'});
+                }
+                if(response===true){
+                if(result.dataValues.isPremiumUser=== true){
+                    res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,true)});
+                }else{
+                    res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,null)});
+                }
+                }else {
+                res.status(401).json({ message: 'User not Authorized' });
+            } 
+            })}
+        else {
+            res.status(404).json({ message: 'User Not Found' });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Internal Server Error'
+        });
+    }
+}
+

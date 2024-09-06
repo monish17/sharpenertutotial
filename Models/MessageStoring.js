@@ -1,0 +1,22 @@
+const Sequelize = require('sequelize');
+const sequelize = require('../util/database');
+
+
+const MessageStoring = sequelize.define('Group-Messages',{
+    ID:{
+        type:Sequelize.INTEGER,
+        unique:true,
+        autoIncrement:true,
+        primaryKey:true
+    },
+    USER_ID:{
+        type:Sequelize.INTEGER,
+        allowNull:false
+    },
+    MESSAGE_CONTENT:{
+        type:Sequelize.STRING,
+        allowNull:false
+    }
+  });
+
+  module.exports=MessageStoring;

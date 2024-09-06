@@ -21,8 +21,10 @@ app.use(cors({
 app.use(bodyParser.json({ extended: false }));
 
 const routes = require('./Routes/Router');
+const messages=require('./Routes/Messages');
 
 app.use('/routes', routes);
+app.use('/Messages',messages);
 
 sequelize
   .sync()

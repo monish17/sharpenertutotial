@@ -1,9 +1,10 @@
 const chatBody=document.querySelector('#Chat-Body');
 const chatInputBar=document.querySelector('#Message-InputBar');
 const sendButton=document.querySelector('#Message-Button');
+const Token=localStorage.getItem('Token');
+
 
 sendButton.addEventListener('click',()=>{
-    const Token=localStorage.getItem('Token');
     const myobj={
         Message:chatInputBar.value
     }
@@ -17,3 +18,15 @@ sendButton.addEventListener('click',()=>{
     });
 })
 
+
+window.addEventListener("DOMContentLoaded",()=>{
+    console.log(Token);
+    axios.get(`http://localhost:3000/Messages/getMessage`,{headers:{'Authorization':Token}})
+    .then((response)=>{
+        console.log(response);
+        alert('Message Retrieved');
+    })
+    .catch(err => {
+        console.log(err);
+    });
+})

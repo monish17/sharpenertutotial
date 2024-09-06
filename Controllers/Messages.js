@@ -16,3 +16,14 @@ exports.MessageStoring=async(req,res,next)=>{
         res.status(400).json({Message:'Server Error'});
     }
 }
+
+exports.RetrievingMessage=async(req,res,next)=>{
+    console.log("request arrived in Message_Retrieving");
+    try{
+        const retrievedMessage=await MessageDatabase.findAll()
+        res.status(200).json({ Message: retrievedMessage});
+    }catch(err){
+        console.log(err);
+        res.status(400).json({Message:'Server Error'});
+    }
+}

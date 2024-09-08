@@ -57,14 +57,10 @@ exports.SignInData=async(req,res,next)=>{
                 res.status(500).json({message:'something went wrong'});
                 }
                 if(response===true){
-                if(result.dataValues.isPremiumUser=== true){
-                    res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,true)});
+                    res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,),Name:result.Name});
                 }else{
-                    res.status(200).json({ message: 'User login In successful',token:generateAccessToken(result.ID,null)});
+                    res.status(401).json({message:'Password Incorrect'});
                 }
-                }else {
-                res.status(401).json({ message: 'User not Authorized' });
-            } 
             })}
         else {
             res.status(404).json({ message: 'User Not Found' });

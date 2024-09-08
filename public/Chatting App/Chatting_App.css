@@ -1,5 +1,10 @@
 body{
     background-image: url(./Chatting_App_Background.webp);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 #header{
@@ -18,6 +23,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
   }
   
   .TextBar input,
@@ -39,3 +45,66 @@ body{
     color: #2c3e50 ;
     cursor: pointer;
   }
+
+
+.Chat-Body{
+  flex: 1; 
+  overflow-y: auto;
+  padding-bottom: 20px;
+  margin-bottom: 60px;
+}
+
+.Chat-Body::-webkit-scrollbar {
+  width: 0; /* Removes the scrollbar's width */
+  background: transparent; /* Ensures scrollbar background is transparent */
+}
+
+.Chat-Body {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.Message-Li{
+    display: inline-block; 
+    max-width: 60%; 
+    min-width: 90px;
+    padding: 8px; 
+    margin: 5px 0; 
+    background-color: #e1ffc7; 
+    border-radius: 15px; 
+    word-wrap: break-word; /* Allow the text to wrap to the next line */
+    word-break: break-word; /* Ensure words break properly */
+    font-size: 14px; /* Set font size */
+    line-height: 1.5; /* Line height for text readability */
+    overflow-wrap: break-word; /* Handle text wrapping */
+    box-sizing: border-box; /* Ensure padding is included in width/height calculations */
+    margin-right: 60%;
+}
+
+.Group-Message-Li{
+  display: inline-block; 
+  max-width: 60%; 
+  min-width: 90px;
+  padding: 8px; 
+  margin: 5px 0; 
+  background-color: #e1ffc7; 
+  border-radius: 15px; 
+  word-wrap: break-word; /* Allow the text to wrap to the next line */
+  word-break: break-word; /* Ensure words break properly */
+  font-size: 14px; /* Set font size */
+  line-height: 1.5; /* Line height for text readability */
+  overflow-wrap: break-word; /* Handle text wrapping */
+  box-sizing: border-box; /* Ensure padding is included in width/height calculations */
+  margin-left: 80%;
+  text-align: left; 
+}
+
+.Username {
+  font-size: 12px;
+  margin-bottom: 3px; /* Adds space between the username and the message */
+}
+
+.Message-Text {
+  font-size: 16px;
+  line-height: 1.5;
+}

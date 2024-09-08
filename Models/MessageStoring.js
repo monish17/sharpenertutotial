@@ -13,6 +13,10 @@ const MessageStoring = sequelize.define('Group-Messages',{
         type:Sequelize.INTEGER,
         allowNull:false
     },
+    USER_NAME:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
     MESSAGE_CONTENT:{
         type:Sequelize.STRING,
         allowNull:false

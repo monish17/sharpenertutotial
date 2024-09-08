@@ -30,6 +30,7 @@ function signInData(myobj){
         .then((response)=>{
             console.log(response);
             localStorage.setItem('Token',response.data.token);
+            localStorage.setItem('UserName',response.data.Name);
             // console.log(response.data.token);
              window.location.href="../Chatting App/Chatting_App.html"
         })
@@ -37,6 +38,8 @@ function signInData(myobj){
             console.log(err)
             if(err.response.status===401||err.response.status===404||err.response.status===500){
                 showMessage(err.response.data.message);
+                Email.value='';
+                Password.value='';
             }
         });
 }

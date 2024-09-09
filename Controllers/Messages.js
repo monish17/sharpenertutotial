@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const { Op } = require('sequelize');
+
+
 const MessageDatabase=require('../Models/MessageStoring');
 
 exports.MessageStoring=async(req,res,next)=>{
@@ -20,9 +23,15 @@ exports.MessageStoring=async(req,res,next)=>{
 
 exports.RetrievingMessage=async(req,res,next)=>{
     console.log("request arrived in Message_Retrieving");
+    let lastMessageId=req.params.lastMessageId;
     try{
         const retrievedMessage=await MessageDatabase.findAll({
-            limit:15,
+            where: {
+                id: { 
+                    [Op.gt]: lastMessageId
+                }
+            },
+            limit:10,
             order:[['createdAt','DESC']]
         }
         )
@@ -32,3 +41,24 @@ exports.RetrievingMessage=async(req,res,next)=>{
         res.status(400).json({Message:'Server Error'});
     }
 }
+
+// exports.frequentPolling=async(req,res,next)=>{
+//     console.log("request arrived in Frequent_polling");
+//     const lastMessageId=req.params.lastMessageId;
+//     try{
+//         const retrievedMessage=await MessageDatabase.findAll({
+//             where: {
+//                 id: { 
+//                     [Op.gt]: lastMessageId
+//                 }
+//             },
+//             limit:15,
+//             order:[['createdAt','DESC']]
+//         }
+//         )
+//         res.status(200).json({ Message: retrievedMessage.reverse()});
+//     }catch(err){
+//         console.log(err);
+//         res.status(400).json({Message:'Server Error'});
+//     }
+// }

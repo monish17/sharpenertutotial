@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group_Chatting App</title>
+    <link rel="stylesheet" href="DynamicPage.css">
+    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@3.0.3/dist/linkify.min.js"></script>
+
+</head>
+<body>
+    <div id="mainDiv" class="Main-Div">
+    <h1 id="header"></h1>
+    <input type="text" id="searchBar" class="Search-Bar" placeholder="Search here">
+    <div id="searchResults" class="dropdown"></div>
+    <button type="button"  id="groupMembersButton" class="btn custom-info-button2" onclick="showGroupMembers()">Group Members</button>
+    <button id="Invite-Button" class="Invite-Button">Invite via link</button><br><br>
+    <div id="GroupMembersDiv" class="List-of-GroupMembers">
+        <button  id="Group-Members-Close-Button" type="button" class="btn-close" aria-label="Close" onclick="closeGroupMembers()">X</button>
+        <h3 class="GroupMembers-Header">List Of Group Members</h3>
+        <div id="innerDiv"></div>
+    </div>
+    <div id="Invite-Link-Div" class="Invite-Link-Div">
+        <!-- <span class="closeModalButton" onclick="closeModal()">&times;</span> -->
+        <button  id="Invite-Link-Close-Button" type="button" class="btn-close" aria-label="Close" onclick="closeModal()">X</button>
+        <h3 class="Group-Joining-h3">Group Joining Link</h3>
+        <div id="linkDivSpan" class="Link-Div-Span"></div>
+    </div>
+    </div>
+    <div id="Chat-Body"  class="Chat-Body">
+        <ul id="Chat-Ul"></ul>
+    </div>
+    <div class="TextBar">
+        <input type="file" id="fileInput" name="fileInput" accept="image/*,video/*,.pdf,.docx" />
+        <button id="uploadButton"></button>
+        <input type="text" placeholder="Enter Message " id="Message-InputBar">
+        <button id="Message-Button">Send</button>
+    </div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <!-- <script>
+        const socket = io("http://localhost:3000");
+    </script> -->
+    <script  src="DynamicPage.js"></script>
+</body>
+</html>

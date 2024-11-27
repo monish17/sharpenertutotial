@@ -3,12 +3,23 @@ body{
     margin: 0;
     padding: 0;
     height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
+.Main-Div, .Chat-Body, .TextBar {
+  width: 100%;
+}
+
+
 #header{
-   text-align: center; 
+  font-size:xx-large;
+   text-align: left;
+   position: absolute;
+   left: 50px;
+   top: 35px;
 }
 
 .TextBar{
@@ -24,6 +35,7 @@ body{
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    height: 50px;
   }
   
   .TextBar input,
@@ -40,18 +52,34 @@ body{
     margin-right: 10px;
   }
   
-  .TextBar button {
+  #Message-Button {
     background-color: #0602e158;
     color: #2c3e50 ;
     cursor: pointer;
   }
 
 
+  .Main-Div{
+    position: absolute;
+    /* background-color: #ccc; */
+    height: 130px;
+    z-index: 1000;
+    background-image: url(./mainDivs.webp);
+  }
+
+  /* .Main-Div:hover{
+    background-image: url(./hovers.avif);
+  } */
+
+
 .Chat-Body{
   flex: 1; 
   overflow-y: auto;
-  padding-bottom: 20px;
-  margin-bottom: 60px;
+  padding-top: 120px;
+  padding-bottom: 70px;
+  /* margin-bottom: 60px; */
+  /* position: relative; */
+  top: 150px;
 }
 
 .Chat-Body::-webkit-scrollbar {
@@ -107,4 +135,205 @@ body{
 .Message-Text {
   font-size: 16px;
   line-height: 1.5;
+}
+
+
+
+.Create-Group{
+  display: none;
+  position: absolute;
+  background-color: white;
+  height: 150px;
+  top: 150px;
+  width: 350px;
+  left: 475px;
+  text-align: center;
+  z-index: 1000; 
+  background-color:  #f5f5dc;
+}
+.Group-Create-Button{
+  position: absolute;
+  left: 1100px;
+  top: 65px;
+  background-color:black;
+  color: whitesmoke;
+  border-radius: 5px;
+  height: 35px;
+  transition: transform 0.3s ease;
+  /* z-index: 1000; */
+}
+button.Group-Create-Button:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.custom-close-button{
+  background-color: red;
+  right: 162px;
+  position: relative;
+  opacity: 1;
+}
+
+.custom-close-button:hover{
+  cursor: pointer;
+}
+
+.GroupListDiv{
+  height: 50px;
+  position: relative;
+  text-align: center;
+  font-size: larger;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+
+.GroupListDiv:hover{
+  transform: scale(1.2);
+}
+
+.custom-info-button{
+  background-color:black;
+  color: whitesmoke;
+  width: 120px;
+  border-radius: 5px;
+  position: absolute;
+  top: 65px;
+  left: 950px;
+  height: 35px;
+  transition: transform 0.3s ease;
+}
+
+.custom-info-button:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.custom-info-button2{
+  background-color:black;
+  color: whitesmoke;
+  width: 120px;
+  border-radius: 5px;
+  position: absolute;
+  top: 65px;
+  left: 800px;
+  height: 35px;
+  transition: transform 0.3s ease;
+}
+
+.custom-info-button2:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+
+.List-of-Groups{
+  background-color: #E4D7F5;
+  /* min-height: 150px; */
+  min-width: 150px;
+  /* max-height: 500px;  */
+  max-width: 350px; 
+  border-radius: 10px;
+  position: relative;
+  left: 40px;
+  display: none;
+  height: 385px;
+  top: 130px;
+  left: 930px;
+  background-image: url(./GroupLists.jpg);
+}
+
+.List-of-GroupMembers{
+  display: none;
+  position: absolute;
+  background-color: wheat;
+  width: 350px;
+  top: 130px;
+  left: 890px;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  height: 345px;
+  background-image: url(./GroupMembers.jpg);
+}
+
+#Group-Members-Close-Button{
+  position: absolute;
+  top: 0%;
+  left:0%;
+ 
+}
+
+.Group-Members-Block:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color:wheat;
+}
+
+.Group-Members-Block{
+  padding: 10px;
+  /* z-index: 5000; */
+}
+
+.Make-Admin-Button{
+  background-color: wheat;
+  border-color:black;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+  margin-left: 20px;
+  font-size:x-small;
+  transition: transform 0.3s ease;
+}
+
+.Make-Admin-Button:hover{
+  cursor: pointer;
+  background-color: black;
+  color: whitesmoke;
+  transform: scale(1.1);
+}
+
+.btn-close{
+  background-color: red;
+}
+
+.btn-close:hover{
+  cursor: pointer;
+}
+
+#listOfGroupsh3{
+  text-align: center;
+}
+
+#fileInput{
+  display: none;
+}
+
+#uploadButton{
+  width: 50px;
+  background-image: url(./upload.png);
+  background-color: transparent;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 40px;
+    width:40px ;
+    border-radius: none;
+   position: relative;
+   right: 10px;
+}
+
+#uploadButton:hover{
+  cursor: pointer;
+}
+
+.imageSettings{
+  /* position: absolute; */
+  height: 200px;
+  width: 200px;
+}
+
+.imageSettings:hover{
+  cursor: pointer;
 }

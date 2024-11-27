@@ -8,7 +8,7 @@ const authenticate=(req,res,next)=>{
         console.log("request arrived in authentication ");
         const user=jwt.verify(Token,`${process.env.SALT}`);
         User.findByPk(user.userId).then(userTable=>{
-            console.log("userTable",userTable);
+            // console.log("userTable",userTable);
             req.user=userTable;
             next()
         })

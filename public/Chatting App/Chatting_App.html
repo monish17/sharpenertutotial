@@ -5,17 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group_Chatting App</title>
     <link rel="stylesheet" href="Chatting_App.css">
+    <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
 </head>
 <body>
+    <div class="Main-Div">
     <h1 id="header">Chat App</h1>
+    <button id="openModalButton" onclick="openModal()" class="Group-Create-Button">Create a New Group</button>
+    <button type="button" class="btn custom-info-button" onclick="showGroups()">Your Groups</button>
+    <button type="button" class="btn custom-info-button2" onclick="showGroupMembers()">Group Members</button>
+        <div class="Create-Group" id="New-Group-Data">
+            <button type="button" class="btn-close custom-close-button" aria-label="Close" onclick="closeModal()">X</button>
+            <h2>Creating a Group</h2>
+            <input type="text" id="groupName" name="groupName" class="Create-Group-Input" placeholder="Enter Group Name">
+            <button id="createGroupButton" onClick="postGroupData()">Create Group</button>
+        </div>
+    <div id="listOfGroups" class="List-of-Groups">
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeGroupList()">X</button>
+        <h3 id="listOfGroupsh3">List of Groups</h3> 
+        <br>
+    </div>
+    <div id="GroupMembersDiv" class="List-of-GroupMembers">
+        <button  id="Group-Members-Close-Button" type="button" class="btn-close" aria-label="Close" onclick="closeGroupMembers()">X</button>
+        <h3 class="GroupMembers-Header">List Of Group Members</h3>
+    </div>
+    </div>
     <div id="Chat-Body"  class="Chat-Body">
-        <ul id="Chat-Ul"></ul>
+        <ul id="Chat-Ul">
+          
+        </ul>  
     </div>
     <div class="TextBar">
+        <input type="file" id="fileInput" name="fileInput" accept="image/*,video/*,.pdf,.docx" />
+        <button id="uploadButton"></button>
         <input type="text" placeholder="Enter Message " id="Message-InputBar">
         <button id="Message-Button">Send</button>
     </div>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/linkifyjs@4.1.3/dist/linkify.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+        const socket = io("http://localhost:3000");
+    </script>
     <script src="Chatting_App.js"></script>
 </body>
 </html>

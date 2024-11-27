@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
 
-const SignUpModel = sequelize.define('GropChatUserDetails',{
+const SignUpModel = sequelize.define('GroupChatUserDetails',{
     ID:{
         type:Sequelize.INTEGER,
         unique:true,

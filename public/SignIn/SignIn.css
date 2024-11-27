@@ -26,6 +26,10 @@ button{
     align-items: center;
     justify-content: center;
 }
+
+button:hover{
+    cursor: pointer;
+}
 .container {
     display: flex;
     width: 80%;

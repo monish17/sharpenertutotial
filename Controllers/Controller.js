@@ -14,7 +14,7 @@ function generateAccessToken(id,key){
 
 exports.SignUpData=async(req,res,next)=>{
     console.log("request arrived in signUpData");
-    console.log(req.body);
+    // console.log(req.body);
     const Name = req.body.Name;
     const Email = req.body.Email;
     const Password = req.body.Password;
@@ -30,7 +30,7 @@ exports.SignUpData=async(req,res,next)=>{
         await User.create({ Name, Email,PhoneNumber, Password: hash });
         res.status(201).json({ message: 'Successfully user registered' });
     } catch (err) {
-        console.log("line 62>>>",err);
+        // console.log("line 62>>>",err);
         if (err.name==='SequelizeUniqueConstraintError') {
             res.json({ message: 'Name or Email Id Already registered' });
         } else {
@@ -40,8 +40,8 @@ exports.SignUpData=async(req,res,next)=>{
 }
 
 exports.SignInData=async(req,res,next)=>{
-    console.log('Request Arrived in SignInData controller');
-    console.log("req.body>>>",req.body);
+    // console.log('Request Arrived in SignInData controller');
+    // console.log("req.body>>>",req.body);
     const Email = req.body.Email;
     const Password = req.body.Password;
     try {
@@ -50,7 +50,7 @@ exports.SignInData=async(req,res,next)=>{
                 Email: Email
             }
         });
-        console.log("result>>>",result);
+        // console.log("result>>>",result);
         if (result) {
             bcrypt.compare(Password,result.Password,(err,response)=>{
                 if(err){

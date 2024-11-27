@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+            input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+
+        #uploadButton {
+            background-color: #4CAF50; /* Customize your button color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #uploadButton:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+
+
+    </style>
+</head>
+<body> 
+    <form action="">
+        <!-- Custom label styled as button -->
+        <!-- <label for="fileInput" class="file-upload-button"></label> -->
+        <!-- Actual file input hidden from view -->
+       
+        <span id="fileName"></span>
+    </form>
+
+    <script>
+        document.getElementById('uploadButton').onclick = function() {
+    document.getElementById('fileInput').click(); // Trigger click on hidden input
+    };
+
+document.getElementById('fileInput').onchange = function() {
+    const fileName = this.files[0] ? this.files[0].name : '';
+    document.getElementById('fileName').textContent = fileName; // Display selected file name
+    }
+    </script>
+</body>
+</html>
